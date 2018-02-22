@@ -1,0 +1,161 @@
+Human Services Field Experience System 
+
+Project Specifications 
+Document
+
+Scrum Master:	Kimberly White
+Team Members: James McGrath
+	 Brandon Rodriguez
+	 Shamimara Sharif
+	 Jonathan Diamond
+	 Sri Datla
+Date:	02/01/2018 	
+Version:	2
+
+
+
+
+
+Slack: seniorprojsp18.slack.com          
+GitHub: https://github.com/Shamimara24/Human_Service                                                                                    
+
+ 
+
+Project Summary
+Introduction
+This chapter documents the scope and objectives of the Human Services Field Experience System. This chapter summarizes the system requirements expressed to the team during multiple interviews with key users and corporate management. It is organized into three sections.
+
+Section 1: Statement of the Business Problem; The coordination of students participating in a college sponsored field experience program tends to be complex and lacking in coordination with the number of students, companies, and hours worked difficult to keep track of. A system needs to be created to help with the coordination of students participating in a field experience program and is capable of keeping track of hours worked. 
+
+Section 2: Current Process; Student information and hours worked need to be stored in a central, easily accessible location which can be accessed by Coordinators. 
+
+Section 3: Business Solution; We have developed a system that allows hours worked to be entered and viewed from an easy to use system. Information can be accessed by either the student or Coordinator. 
+
+
+Overview
+This section identifies the high-level objectives to be addressed by Human Services Field Experience System. These objectives are the results of interviews with members of the Human Services staff and management. This section will give an overview of the whole Human Services Field Experience System and will be explained in its context to show how the system interacts with the user and its basic functionality. 
+
+
+Key System Functions
+Based on interviews with project Coordinators and discussion among project team members, the following key functions have been defined for the Human Services Field Experience System.
+•	Enter worked hours into the system
+•	Approve students timesheets
+•	Reject students timesheets
+•	Track total number of hours worked
+•	Display relevant company team information
+•	Generate a report
+•	Export a report
+ 
+Project Goals
+The Rowan University senior project group has chosen to design a system for the Human Services Field Experience Department. The department is in charge of tracking, verifying, and approving all students participating in their filed experience program. Due to it’s extensive nature, the department needs to develop a way to better manage the people involved and handle all of the paperwork associated in order become accredited. We have developed a system that allows the better organization of the department by meeting the needs of the department. 
+
+ 
+Proposed Solution
+The proposed solution centers around two key players, the Student and the Field Experience Coordinator. Students are able to use the Timesheet page to enter in hours worked, and submit for further approval. Coordinators use the Timesheet page to view all Students hours and either approve or reject the submitted timesheets. Coordinators additionally are responsible for maintaining the System.
+
+
+ 
+Figure 2.1 Use Case Diagram
+
+
+ 
+Context Diagram of the Proposed Solution Process
+Below is an example of a diagram depicting the proposed solution process.
+
+
+ 
+Figure 2.2 Context Diagram
+
+Requirements
+In this chapter we summarize the requirements that have been specified by the customer as well as requirement we deem necessary. The first section presents the functional requirements, and the second, the non function requirements.
+
+Functional Requirements
+•	The system must utilize Rowan University’s Centralized Authentication Service or something similar.
+•	The system must provide a forgot password link
+•	The system must provide the ability to provide an error message for incorrectly entered login credentials.
+•	The system must provide a login screen.
+•	The system must provide the ability to display necessary personal information for connections.
+•	The system must provide the ability to enter information into a timesheet.
+•	The system must provide the ability for Coordinators to view timesheets for all students.
+•	The system must provide the ability for Coordinators to approve timesheets.
+•	The system must provide the ability for Coordinators to reject timesheets.
+•	The system must calculate total number of hours worked per week.
+•	The system must calculate total number of hours worked per day.
+•	The system must calculate total number of hours remaining. 
+•	The system must use a SQL Database.
+•	The system must provide the ability for multiple user use concurrently.
+•	The system must provide the ability to log in to the system with a username and password
+•	The system must provide timesheets for each student.
+•	The system must provide the ability to save a timesheet
+•	The system must provide the ability to submit a timesheet.
+•	The system must provide the ability to generate a record.
+•	The system must provide the ability to export a record. 
+
+
+Non Functional Requirements
+•	The system must be accessible 24/7.
+•	The system must provide an interface with real-time or near real-time data exchange.
+
+
+
+Product Features
+Login Page
+The Login Page will operate with the assistance of Rowan CAS. Users will enter in their username and password into the page and log onto the system. 
+
+ 
+Figure 4.1 Login Page
+
+ 
+Dashboard Page
+The Dashboard Page will act as the home page for the web-application. It will house the hyperlinks to the various other features present within the system. This includes hyperlinks to the Connections Page, Timesheet Page, Profile Page, a Logout function, as well as a “home” hyperlink that will redirect back to the Dashboard. These hyperlinks will be available on all pages. The Dashboard is only used as a landing page for all users upon a successful login.
+
+ 
+Figure 4.2 Dashboard Page
+
+
+Connections Page
+Field-experience coordinators can have multiple students, with the inverse being a possibility as well. In order to keep track of this relationship, a Connections Page will be used to display all current students and coordinators for that year-semester, along with user information, such as phone number and email, will be displayed on this page.
+
+ 
+Timesheet Page
+The timesheet page is one of the most important features to our project. The timesheet page features a data grid labeled with each day of the week, a start, break, and end time. The total number of hours worked each day is calculated based on the number of hours worked. In addition, the overall total number of hours worked that week is calculated at the bottom of the page. Students are able to input, edit, save, submit, and modify timesheet hours as necessary. Field experience Coordinators are able to access the timesheet page to view all students timesheet summary. By viewing the timesheet page, Coordinators are able to either approve or reject a Students timesheet. A timesheet may be rejected for a number of reasons, such as error in time entered. From the Timesheet page, Coordinators are able to generate an
+
+ 
+Figure 4.3 Student’s Timesheet Page 
+
+ 
+Figure 4.4 Field Experience Coordinator Timesheet Page 
+
+
+Profile Page
+The profile page allows users to edit or modify features such as, display name, password, and the settings for their individual profile. Allowing the ability to customize a users page, gives the user a more enjoyable user experience. 
+Limitations
+The Human Services Field Experience was designed in the span of one semester. Development was divided into productive meetings carried out by a team composed of six undergraduate students at Rowan University. There were several carefully considered limitations made when designing and developing the system.
+
+Primarily, these constraints were:
+1.	Schedule
+2.	Budget
+3.	Software
+Schedule
+The HSFES was planned and developed with the time frame of one collected semester in mind. Development had a start date of mid January with an end date in late April. This affected the scope of the product and ruled out certain functionality when establishing the requirements for the finished project.
+Budget
+The HSFES system was developed with a budget of zero dollars, meaning and premium or paid software or software library that was not freely available for educational purposes was off limits. This was considered not only in design choices of the system, but also in project scope. Software such as MySQL was chosen as the database system due to its zero cost and ease of use. 
+Software
+All software used in creating the HSFES had to be free or freely available to student with licenses an additional consideration.
+
+Stretch Goals
+Due to the anticipated HSFES limitations, stretch goals were developed to be implemented if possible to enhance the project. 
+
+Mobile Application
+A mobile application would be designed if time permits. Creating an additional mobile application, on top of the web application will enhance the value of product by allowing it to be portable and easily accessible to users on the go. 
+
+Automated Email Warnings
+Every student must complete the same requirement of 120 total hours logged. To help students achieve this requirement, HSFES will automatically inform students via email that they haven’t completed 30, 60, or 90 hours within 3.75, 7.5, or 11.25 weeks respectively. This is based on the metric that students should work 120 hours within the allotted 15 weeks in the semester, or 8 hours per week. A stretch goal within this pre-existing goal would be automated calculations that would inform the student how many more hours per week he or she should work to uniformly reach the requirement. 
+
+Mail Page
+Acting as an addition to the Automated Email Warnings, another stretch goal includes the integration of a Mail, or Mailbox, Page. Such a page will house any automated email sent by HSFES. With this in place, users can easily see any warnings they have received. This will increase the attention placed on these warnings, since they can now be found in two places: the user’s email and the user’s dedicated Mail Page.
+
+Automated Graph Visuals
+Throughout the HSFES, data statistics are ran on students’ hours logged; for storage and reporting purposes. With this data, graph visuals can be automatically generated to emphasize certain statistics in a more readable manner. The Coordinator will also use these graphs to assess his or her class and extrapolate student behaviors within the program.
+
+
