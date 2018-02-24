@@ -1,0 +1,343 @@
+Human Services Field Experience System 
+
+Design
+Document
+
+
+
+
+
+Scrum Master:	Kimberly White
+Team Members: James McGrath
+	 Brandon Rodriguez
+	 Shamimara Sharif
+	 Jonathan Diamond
+	 Sri Datla
+Date:	02/22/2018 	
+Version:	1
+
+
+ 
+Project Summary
+Purpose
+This document presents the design specifications including sections for Technical Architecture, Configuration, and Software Design for the Human Services Field Experience System.
+
+“This document presents the Solution Development Life Cycle (SDLC) design/installation information for the Human Services Field Experience, as well as the web architecture and requirements for use. Refer to the terms and definitions section of this document for disambiguation of the terms.
+
+
+Scope
+Design/Installation elements that are applicable and within the scope of this document include: Technical Architecture, Solution Design Specification, Coding Standard, Roles and Responsibilities, and a glossary of terms.
+
+“This Human Services Field Experience System web page is designed to automate a large number of student’s timesheet recording and increase the accuracy of tracking hours worked, in order to approve the experience of its servers and clients. It includes a compatible graphical user interface that allows users to input time into their timesheet, approve/reject a timesheet, 
+
+
+
+ 
+Technical Architecture 
+
+This section identifies the high-level objectives to be addressed by Human Services Field Experience System.
+
+Hardware Inventory, Specifications and Locations
+
+Input / Output Devices
+The Warehouse Inventory Management System utilizes several devices to support user input/output such as: a computer, keyboard, and mouse. 
+
+Computer: A desktop with a monitor or laptop with access to the internet will be required for any user of the application. 
+
+Keyboard: It is required to have a standard keyboard attached to the computer needed for credential input. It is also recommended incase of malfunction or emergency situations.
+
+Mouse: A mouse is required for complete navigation of the web pages.
+
+
+
+Middleware Hosting
+Middleware and other supporting software includes: MySQL version 6.3 for database development and management. This will be hosted on the database administrators’ and development teams’ personal computers. 
+
+Other Devices
+Local Network: The program sends and receives information from a SQL database, and this database should be on the local network. The database is utilized to receive information as well as to add or update information in the database as an administrator.
+
+Server Computer: The database must be hosted on a computer acting as a server. The other computers on the network must also be able to access this computer or send or retrieve data. 
+
+Additional Information
+Configuration Specification
+Not applicable: This solution will be self-sufficient and only requires the use of desktops or laptops with Microsoft Windows as an operating system.
+
+
+ 
+Solution Design Specification
+This solution will be a distributed solution for all entities of the company that employ this application. One database will store all of the information regarding suppliers, warehouses, orders, items, etc. The application will connect to this database for all information needed to run the application.
+
+Software Description
+Modules that will form this solution include: a graphical user interface (GUI) with different interfaces for completing different tasks, a SQL based database for storing all information regarding the Human Services Field Experience System, and a controller to handle data processing between each of these two components. 
+
+Module Description
+Application Modules:
+•	UI
+o	Module operation - This module’s responsibility is to display the interface onscreen, as well as call the functions to process whichever input components the user interacts with.
+o	Interfaces to other modules - This module interfaces with the admin page for sensitive input such as login info. It interfaces with the student module to call button functions related to modifying one another. It also interfaces with the navigation menu when a button is pressed to navigate to another screen.
+o	Error handling and data checking - The module receives responses from other modules it interfaces with for exceptions such as an invalid login or item. Using this information, the UI can adjust its behavior if the data does not satisfy what the function needs.
+
+•	Navigation
+
+o	Module operation - This module navigates between the different menus and screens in the application. When started, the application prompts for a login. When a valid login and password is entered, the user is brought to a selection screen. From there, they can navigate to admin functions if their account is an admin, or they can navigate to the timesheet screen to begin the checkout process.
+o	Interfaces to other modules - This module interfaces with the admin module by allowing the user access to different screens. It does the same with the student module. The module is given commands via the UI module when the user presses a button to navigate between screens.
+o	Error handling and data checking - The navigation module interfaces with the interface module to ensure that the user has admin privileges if they attempt to access the admin screen.
+
+•	Database Communication
+
+o	Module operation - This module acts as a middleman between the application’s functions and the operations required to access or modify the database. Its sole purpose is to ease communication between the database and the application by having standardized queries and functions it can call. The module will make use of MySQL connectivity to perform these tasks. This will be the only module to make use of since, as previously mentioned, no other modules will access the database manually.
+o	Interfaces to other modules - This module is accessed by the admin and student modules to retrieve item and user information. It interfaces with the SQL server directly to find and update the appropriate fields.
+o	Error handling and data checking - The module will have redundancies and exceptions to prevent any erroneous communications. It’ll return errors if any information or login being searched for is not found, if the input given is invalid, or if the server is currently unreachable.
+
+•	Student
+
+o	Module operation - The student module contains data structures and functions related to student operations. The basic object types of the application are stored here: Timesheets, Hours, and Date etc. The module also contains functions to modify the current function.
+o	Interfaces to other modules - The module accesses the database communication module to retrieve any information when needed. The various functions of the process are called upon by the UI module when the corresponding input is given by the user.
+o	Error handling and data checking - Invalid information and empty inputs are handled by the database and reported back to the student module. The student module will still check for improperly formatted inputs when executing a function.
+
+•	Admin
+
+o	Module operation - The admin module handles dealing with sensitive inputs and permissions. One primary function is to obfuscate the password the user inputs before sending it over to the server communication module. This module exists as a checkpoint to make sure none of this sensitive information gets leaked.
+o	Interfaces with other modules - The module will access the database communication functions to retrieve or modify users from the database. It’s also used to do the same with student module in the database, for the editing, adding, or deleting information. The module is called by the navigation module to ensure the user in question has access to the admin page, and also by the UI module to handle sensitive inputs such as passwords.
+o	Error handling and data checking - The module will verify that the information given is correct before sending it to the database. Upon receiving a response, it’ll return a special case if there was an issue such as an invalid login.
+
+
+
+Graphical User Interface (GUI):
+Login Screen
+The Login Page (Figure 1) allows the user to enter a username and password. The user is allowed to successful to enter the Human Services Field Experience System (HSFES) if the supplied credentials are validated. Otherwise, inform the user that the supplied credentials failed to be validated.
+
+Dashboard page
+The Dashboard page (Figure 2) will act as the home page for the web-application. It will house the hyperlinks to the various other features present within the system. This includes hyperlinks to the Connections page, Timesheet page, Profile page, a Logout function, as well as a “home” hyperlink that will redirect back to the Dashboard. These hyperlinks will be available on all pages. The Dashboard is only used as a landing page for all users upon a successful login.
+
+Connections page
+Field-experience Sponsors can have multiple students, with the inverse being a possibility as well. In order to keep track of this relationship, a Connections page (Figure 3) will be used to display all current students and Sponsors for that year-semester. Furthermore, user information, such as phone number and email, will be displayed on this page. As such, both students and Sponsors can decide to create a new connection for any opposite-typed user currently viewable. If a student selects a Sponsor to open a connection with, and that Sponsor opens a connection with that same student, timesheet functionality is available for both users in that relationship.
+
+
+Timesheet page
+The Timesheet page is one of the most important features to the system, which differs based on the user signed into the system.
+
+Student Users
+There is a general Timesheet page for student users (Figure. 4). This page features two data grids for one full week each. The grid is labeled with a date, day of the week, a start, break, and end time. The total number of hours worked each day is calculated based on the number of hours worked. In addition, the overall total number of hours worked that week is calculated at the bottom of the page. 
+Coordinator/Sponsor Users
+Field Experience Administrator and Field Experience Managers are able to input, edit, save, submit, and modify timesheet hours as necessary. Field Experience Administrators are able to access the Administrator Timesheet (Figure 5) page to view all students timesheet summary. By viewing the Timesheet page, Administrators are able to either approve or reject a students timesheet. A timesheet may be rejected for a number of reasons, such as error in time entered.
+
+Reporting page
+
+Profile page
+The Profile page (Figure 7) allows users to edit or modify features such as, display name, password, and the settings for their individual profile. Allowing the ability to customize a users page, gives the user a more enjoyable user experience. 
+
+
+Problem solving approaches considered during the design phase
+There were several problem solving approaches that were considered during the design phase.
+•	Collaboration on certain tasks and pages at times were needed, by utilizing team member skills to easily and effectively create pages. 
+•	Diving up tasks where people were stronger skilled, at times were needed. Those that were stronger and more familiar with PHP and CSS, took on the lead of coding. Whereas those that were stronger and had a clearly design idea worked on the mockups. 
+ 
+Mockups
+This section identifies the high-level objectives to be addressed by Human Services Field 
+ 
+Figure 1  Login Page
+
+ 
+Figure 2  Dashboard Page
+
+ 
+Figure 3  Connections Page
+   Figure 4  Student Timesheet Page
+  
+Figure 5  Administrator Timesheet Page
+ 
+Figure 6  Administrator Report Page
+ 
+Figure 7  Profile Page
+
+
+ 
+Backend Information
+This section identifies the high-level objectives to be addressed by Human Services Field Experience System.
+
+Database Schema:
+ 
+
+ 
+Screen/Page Functionality Endpoints 
+This section identifies the high-level objectives to be addressed by Human Services Field Experience System.
+
+•	Login Page
+o	Sign up for an account
+	Clicking on “sign up for an account” link will trigger a popup window on the log in page where a user can create a username and password or account log in.
+o	Forgot password
+	Clicking on the “forgot password” link will trigger an email to be sent to the user so that they are able to reset their password
+o	Login
+	Incorrect credentials
+•	Clicking on the “login” button with incorrect credentials will trigger a message notifying the user an incorrect username and password were entered and to try again.
+	Correct credentials
+•	Clicking on the “login” button with correct credentials will open the Dashboard page.
+•	Dashboard
+o	Profile
+	Clicking on the “Profile” text in the Profile section window will open the Profile page.
+o	Connections
+	Clicking on the “Connections” text in the Connections section window will open the Connections page.
+o	Calendar
+	Clicking on a day in the calendar will open a popup window where the user is able to add, edit, or delete a even from the Google calendar.
+o	Timesheet
+	Clicking on a cell in the timesheet section will allow a user to enter in a time.
+	Clicking “Save” will save the current timesheet to continue editing at a later time
+	Clicking “Submit” will submit the current timesheet
+	Clicking on the “Timesheet” text in the Timesheet section window will open the Timesheet page. 
+•	Connections Page
+•	Student Timesheet Page
+o	Clicking on a cell in the timesheet section will allow a user to enter in a time.
+o	Clicking on “Add Timesheet” will generate a new timesheet
+o	Clicking “Save” will save the current timesheet to continue editing at a later time
+o	Clicking “Submit” will submit the current timesheet
+•	Administrator Timesheet Page
+o	Filter
+	Clicking on the “Timesheet” dropdown, will open a drop down menu with all students names listed. The administrator can select one student, or all timesheets to view
+o	Select
+	Clicking on the checkboxes next to the student names will select all of the students selected.
+o	Approve
+	Clicking “Approve” will approve all timesheets selected
+o	Reject
+	Clicking “Reject” will reject all timesheets selected
+•	Reports Page
+o	Filter
+	Clicking on the “Timesheet” dropdown, will open a drop down menu with all students names listed. The administrator can select one student, or all timesheets to view
+o	Date Range
+	Clicking on the “Date Range” dropdown, will open a drop down menu with various date ranges. The administrator can select the timesheets for the desired date range.
+o	Export
+	Clicking on the “Export” button will export the generated report as a pdf or Excel file
+•	Profile Page
+o	Change Password
+	Clicking on the “submit” button, will save the change password request
+•	Navigation Bar
+o	All web pages can be accessed through the navigation bar at the top of each page and by clicking on the web page name. 
+	Dashboard
+	Connections
+	Timesheets
+	Reports (Administrators only)
+	Profile
+
+ 
+Tech Stack
+Front End:
+•	CSS
+•	HTML
+Back End:
+•	Javascript
+•	PHP
+•	SQL
+
+List Goals
+Based on interviews with project Coordinators and discussion among project team members, the following project goals have been defined for the Human Services Field Experience System.
+•	Log in to the system with user specific credentials
+•	Enter worked hours into the system
+•	Approve timesheets
+•	Reject timesheets
+•	Track total number of hours worked
+•	Display relevant contact information
+•	Generate reports
+•	Export reports
+
+ 
+Prototype
+Plans
+	The early prototype will feature there pages:  the Login page, dashboard page, and a Timesheet page. The Login page will be where users will be able to login and access the system after successful credential login. There is an account sign up link, where a first time user will be prompted to create an account using a desired username and password. The Login page also features a forgot password link where the user will be prompted for their email address and an email will be sent to reset their password. A user who enters the correct username and password will be sent to the dashboard page. If the user’s credentials are incorrect, an error will pop up saying “Invalid username or password”. 
+	The second part of our prototype will be the dashboard page. This dashboard page is considered to be the home page for users where they can easily access variety of different areas relevant to their account. The dashboard page will feature different sections; a timesheet, calendar, profile, and connections. Each section will display current information, as well as provide a secondary link to their page, when applicable. The timesheet section will feature the timesheet for the current wee, where a user can quickly enter in timesheet information, without accessing the Timesheet page directly. The calendar section will be intended to Google calendar, which will show the user their current and upcoming scheduled plans. The Profile will feature the users profile details such as email, username, and password. Finally the Dashboard page will feature will feature a connections section. Here, a list of all of the users current connections will be displayed, along with names, email addresses, and titles. For a student, field experience supervisors, along with field experience advisors contact information will be displayed. 
+	The final part is to demonstrate the Timesheet page. In the final product we will have two different timesheets, one for students, and one for administrators. The students Timesheet page will feature timesheets with a start time, break, and end time. In addition, the total number of hours worked for each day will be totaled for each day, as well as a total for the entire week. Students will be able to create a new timesheet for the desired week when needed, which will also be done on this page. Students will be able to save their timesheet entries until they are ready to submit their hours for approval. The administrators Timesheet page will have a list of all of the students and their timesheets for the current period. Through this, administrators will be able to approve or reject a timesheet submitted by the students. The prototype will feature a demonstration the students Timesheet page.
+
+
+Concerns
+There are several concerns that exist:
+•	Login
+o	The most important aspect of the project and prototype is logging in. We want to make sure we connect the login page to sql so that login credentials can be generated. In addition, we want to make sure these credentials are able to be stored for continued use. We want to have this working by the prototype as logging in is the most important key to having a successful product. 
+•	Timesheet entry
+o	The second most important aspect of the project and prototype is timesheet entry. We need to make sure a user can not only enter in time, but we want to make sure the system is able to store that information for continued viewing and editing, as well as for administrators to be able to view that information. 
+ 
+Assigned Tasks/Roles and Responsibilities
+Assigned Tasks
+Assigned tasks relevant to this document and project are:
+
+Project Member	Assigned Task/Role
+Kimberly White	•	Scrum Master
+•	Submittal of deliverables
+•	Integration of pages
+•	Focus on backend development
+Brandon Rodriguez	•	Focus on backend development
+•	Login page development
+•	EER Diagram
+•	Database structure and development
+Shamimara Sharif	•	Focus on frontend development
+•	Profile page development
+Jon Diamond	•	Focus on backend development
+•	Timesheet page development
+James McGrath	•	Focus on frontend development
+•	Dashboard page development
+Siri Datala	•	Focus on frontend development
+•	Reporting page development
+
+Roles and Responsibilities
+Responsibilities relevant to this document and project are:
+
+Role	Responsibilities
+System Administrator	•	Validate that all system components are installed and configured correctly.
+•	Ensure that all infrastructure is configured to work with the application and database server.
+•	Manage who has the admin role
+Admin	•	Update and maintain users in the database
+•	Update and maintain information in the database
+
+
+ 
+Terms and Definitions:
+The terms and definitions specific to this document are included below: 
+
+Term or Acronym	Definition
+Attribute	A characteristic of an object.
+Availability	The degree to which a component or system is operational and accessible required for use.
+Component	A minimal software item that can be tested
+Constraint	A statement of restrictions that modifies a requirement or set of requirements by limiting the range of acceptable solutions
+Context diagram	A diagram that represents the actors outside a system that could interact with that system.
+Client	The Human Resources department or general users implementing the web page
+Database	The MySQL database containing the user and information for the department or client.
+Deliverable	Any product that must be delivered to someone other than the product's author.
+Device	A computer using the web page to serve the users
+Feature	An attribute of a component or system specified or implied by requirements documentation.
+Functional requirement	A requirement that specifies a function that a component or system must perform
+Functionality	The capability of the software product to provide functions which meet stated and implied needs when the software is used under specified conditions.
+Impact	Estimated or actual numeric effect of a design idea on a requirement attribute under given conditions.
+Integration	The process of combining components or systems into larger assemblies.
+Non-Functional requirement	A requirement that does not relate to functionality but to attributes such as reliability, efficiency, usability, maintainability and portability.
+Performance	The degree to which a system or component accomplishes its designated functions within given constraints regarding processing time.
+Process	A set of interrelated activities which transform into outputs.
+Product	An output of a process
+Portability	The ease which  the software product can be transferred from one hardware or software environment to another.
+Quality	The degree to which a component, system or process meets specified requirements and/or user/customer needs and expectations.
+Rationale	A set of reasons or logical basis for a course of action or particular belief
+Release	A version of the solution released for installation and use by the customer/end users/
+Reliability	The ability of the software product to perform its required functions under stated conditions for a specified period of time, or for a specified number of operations.
+Requirement	A condition or capability that must be met or possessed by a system or system components to satisfy a contract, standard, specification, or other formally imposed documents.
+Review	An evaluation of a product or project status to ascertain discrepancies from planned results and to recommend improvements.
+Safety	The capability of the software product to achieve acceptable levels of risk of harm to people, business, software, property or the environment in a specified context of use.
+Security	Attributes of software products that bear on its ability to prevent unauthorized access, whether accidental or deliberate, to programs and data.
+Solution	A design idea which, if implemented is expected to lead to the partial or full satisfaction of a set of attribute requirements/
+System	A collection of components organized to accomplish a specific function or set of functions.
+Usability	The capability of the software to be understood learned, used and attractive to the user when used under specified conditions.
+User	An employee of the Human Resources department, Field Experience Sponsor, and  Student operating the web page application on a machine.
+Validation	Confirmed by examining and through provision of object evidence that the requirements of a specific intended use or application have be fulfilled.
+Verification	Confirmation by examination and through provision of object evidence that specified requirements have be fulfilled
+Version	A specific form or variation of something
+
+
+ 
+Supporting References:
+Identifier	Title
+Project Specification 	Project Specification Document for Human Service Field Experience Document.
+
+
+APPENDIX A: KEY TERMS
+The following table provides definitions and explanations for terms and acronyms relevant to the content presented within this document.
+
+Definition	  Term
+Human Services Field Experience System	HSFES
+
+
