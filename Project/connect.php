@@ -16,11 +16,11 @@ function ConnectDB() {
     $dbname   = 'rodrigueb6';           // For elvis, your MySQL Username is repeated here
 
    try {
-       $dbh = new PDO("mysql:host=$hostname;dbname=$dbname",
-                      $username, $password);
+       $dbh = mysqli_connect($hostname, $username,
+                      $password, $dbname);
     }
-    catch(PDOException $e) {
-        die ('PDO error in "ConnectDB()": ' . $e->getMessage() );
+    catch(int $e) {
+        die ('mysqli error in "ConnectDB()": ' . $dbh->connect_errno);
     }
 
     return $dbh; 
