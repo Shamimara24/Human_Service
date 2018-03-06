@@ -57,17 +57,32 @@ $form ='<body>
         </div>
         <div class="box3">
         <h2>Profile</h2>
-        </div>
-        <div class="box4">
-            <h2>Timesheet</h2>
-        </div>
-    </div>';
+        <i class="fas fa-user" style="font-size:48px;center"></i>
+        <br></br>';
+
 
       if($username && $userid){
                 echo "Welcome $username \n $form";
       }else
       echo "Please login <a href='./login.php>Login here.</a>";
      ?>
+
+
+
+<?php
+$form='
+        </div>
+        <div class="box4">
+            <h2>Connections</h2>
+        </div>
+    </div>';
+
+      if($username && $userid){
+                echo "Username: $username \n $form";
+      }else
+      echo "Please login <a href='./login.php>Login here.</a>";
+     ?>
 <body>
    </body>
 </html>
+
