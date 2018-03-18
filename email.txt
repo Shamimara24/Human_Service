@@ -1,0 +1,7 @@
+<html>
+<form action = "send.php" method = "post">
+	Name: <br><input type = "text" name = "name"><br>
+	Request: <br><textarea name = "request"></textarea><p>
+	<input type = "submit" name = "submit" value = "Send">
+</form>
+</html>
