@@ -88,6 +88,12 @@ $username = $_SESSION['username'];
     display: table;
     clear: both;
 }
+
+div.relative {
+position:relative;
+left: 50%;
+margin-top:50%;
+}
 </style>
 <div class="row">
   <div class="column left">
@@ -141,6 +147,9 @@ $username = $_SESSION['username'];
 
 
 </script>
+</div>
+<div class = "relative">
+	<button type = "submit">Submit</button>
 </div>
 </body>
 </html>
