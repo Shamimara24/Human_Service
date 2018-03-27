@@ -11,6 +11,12 @@ $username = $_SESSION['username'];
 
 $sql = "select username from users";
 $result = mysqli_query($dbh,$sql);
+
+$sqltbl = "select username, ts.total_hours as total_hours from rodrigueb6.users u join rodrigueb6.students s using (Userid) join rodrigueb6.studenttimesheets sts using (bannerID) join rodrigueb6.timesheets ts using (timesheetsid)";
+
+$sqldata = mysqli_query($dbh,$sqltbl) or die('error getting database');
+
+
 ?>
 
 
@@ -48,6 +54,7 @@ $result = mysqli_query($dbh,$sql);
 
 <p>Student:
 <select>
+	<option value ="all">Select All</option>
 	<?php
 	while($row1 = mysqli_fetch_array($result)):;
 	?>
@@ -65,66 +72,23 @@ $result = mysqli_query($dbh,$sql);
 
             <h2> </h2>
 
-<style>
-* {
-    box-sizing: border-box;
+<?php
+echo "<table>";
+echo "<tr><th>Name</th><th>Hours</th></tr>";
+
+while ($row = mysqli_fetch_array($sqldata,MYSQLI_ASSOC)){
+	echo "<tr><td>";
+	echo $row['username'];
+	echo "</td><td>";
+	echo $row['total_hours'];
+	echo "<td></tr>";
+	
 }
 
-/* Create four unequal columns that floats next to each other */
-.column {
-    float: left;
-    padding: 10px;
-
-}
-
-.left, .lmiddle {
-  width: 30%;
-}
+echo "</table>";
 
 
-.rmiddle, .right {
-  width: 20%;
-}
-
-
-/* Clear floats after the columns */
-.row:after {
-    content: "";
-    display: table;
-    clear: both;
-}
-
-div.relative {
-position:relative;
-left: 50%;
-margin-top:50%;
-}
-</style>
-<div class="row">
-  <div class="column left">
-    <h2>Name</h2>
-	<p>Jonathan Diamond <p>
-	<p>Brandon<p>
-  </div>
-  <div class="column lmiddle">
-    <h2>Week</h2>
-	<p>3/12/18 - 3/23/18<p>
-  </div>
-  <div class="column rmiddle">
-    <h2>Hours Completed</h2>
-	<p>65<p>
-  </div>
-  <div class="column right">
-    <h2>Accept/Reject</h2>
-	<select>
-    <option value="Accept">Accept</option>
-    <option value="Decline">Decline</option>
-
-	</select>
-	<p><p>
-  </div>
-</div>
-
+?>
 <script>
    document.getElementById('date').value = (new Date()).format("m/dd/yy");
 </script>
