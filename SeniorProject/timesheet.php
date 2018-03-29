@@ -12,17 +12,14 @@ $username = $_SESSION['username'];
 
 
 <!DOCTYPE html>
-<html>
-  <head>
-  <meta charset="utf-8">
+<html lang="en">
+<head>
+    <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Timesheet</title>
-    <link rel="stylesheet" href="style.css">
-    <script defer src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
-    <meta charset="utf-8">
-    <title>Time Sheet</title>
-	 <style>
+	<link rel="stylesheet" href="style.css">
+    <style>
       form {
         /* Just to center the form on the page */
         margin: 0 auto;
@@ -64,12 +61,16 @@ $username = $_SESSION['username'];
         padding-left: 90px;
         /* same size as the label elements */
       }
+	  input[type=number]{
+    width: 50px;
+} 
       button {
         /* This extra margin represent roughly the same space as the space between the labels and their text fields */
         margin-left: .5em;
       }
     </style>
 </head>
+
 
 
 <body>
@@ -85,72 +86,196 @@ $username = $_SESSION['username'];
                 <a href="login.php" style="float:right"><i class="fas fa-sign-out-alt"></i></a>
         </div>
     </div>
-         <form action="/my-handling-form-page" method="post">
+        <div class="wrapper2">
+        <div class="box5">
+            <h2>Timesheet</h2>
+
+<form name="Timesheet">
+<div align="center">
+<p>Week of:
+<p>Month:
+<select>
+    <option value="January">January</option>
+    <option value="February">February</option>
+    <option value="March">March</option>
+    <option value="April">April</option>
+    <option value="May">May</option>
+    <option value="June">June</option>
+    <option value="July">July</option>
+    <option value="August">August</option>
+    <option value="September">September</option>
+    <option value="October">October</option>
+    <option value="November">November</option>
+    <option value="December">December</option>
+</select>
+
+
+Year:
+<select>
+    <option value="2017">2017</option>
+    <option value="2018">2018</option>
+   
+  <form action='./login.php' method='post'> 
+   
+</select>
+<table width="800">
     <div>
+		<td align="center" width="38">
         <label for="name">Sunday:</label>
-        <input type="number" value="0" /> 
+        <input type="number" value="0" name="sunday1" /> 
+		</td>
     </div>
     <div>
+		<td align="center" width="38">
         <label for="name">Monday:</label>
-        <input type="number" value="0" /> 
+        <input type="number" value="0" name="monday1" /> 
+		</td>
     </div>
     <div>
+		<td align="center" width="38">
         <label for="name">Tuesday:</label>
-        <input type="number" value="0" /> 
-    </div>
+        <input type="number" value="0" name="tuesday1" /> 
+		</td>
+	</div>
 	<div>
+		<td align="center" width="38">
         <label for="name">Wednesday:</label>
-        <input type="number" value="0" /> 
+        <input type="number" value="0" name="wednesday1" /> 
+		</td>
     </div>
 	<div>
+		<td align="center" width="38">
         <label for="name">Thursday:</label>
-        <input type="number" value="0" /> 
+        <input type="number" value="0" name="thursday1" /> 
+		</td>
     </div>
 	<div>
+		<td align="center" width="38">
         <label for="name">Friday:</label>
-        <input type="number" value="0" /> 
+        <input type="number" value="0" name="friday1" /> 
+		</td>
     </div>
 	<div>
+		<td align="center" width="38">
         <label for="name">Saturday:</label>
-        <input type="number" value="0" /> 
+        <input type="number" value="0" name="saturday1" /> 
+		</td>
     </div>
-	 <div>
-        <label for="name">Sunday:</label>
-        <input type="number" value="0" /> 
-    </div>
-    <div>
-        <label for="name">Monday:</label>
-        <input type="number" value="0" />
-    </div>
-    <div>
-        <label for="name">Tuesday:</label>
-        <input type="number" value="0" /> 
-    </div>
-	<div>
-        <label for="name">Wednesday:</label>
-        <input type="number" value="0" /> 
-    </div>
-	<div>
-        <label for="name">Thursday:</label>
-        <input type="number" value="0" /> 
-    </div>
-	<div>
-        <label for="name">Friday:</label>
-        <input type="number" value="0" /> 
-    </div>
-	<div>
-        <label for="name">Saturday:</label>
-        <input type="number" value="0" /> 
-    </div>
+	</table>
+	<br>
 	
-	<div class="button">
-  <button type="submit">Submit</button>
-</div>
-<div class="button">
-  <button type="submit">Save</button>
-</div>
+	<table width="800">
+	 <div>
+		<td align="center" width="38">
+        <label for="name">Sunday:</label>
+        <input type="number" value="0" name="sunday2" /> 
+		</td>
+    </div>
+    <div>
+		<td align="center" width="38">
+        <label for="name">Monday:</label>
+        <input type="number" value="0" name="monday2" />
+		</td>
+    </div>
+    <div>
+		<td align="center" width="38">
+        <label for="name">Tuesday:</label>
+        <input type="number" value="0" name="tuesday2" />
+		</td>
+    </div>
+	<div>
+		<td align="center" width="38">
+        <label for="name">Wednesday:</label>
+        <input type="number" value="0" name="wednesday2" />
+		</td>
+    </div>
+	<div>
+		<td align="center" width="38">
+        <label for="name">Thursday:</label>
+        <input type="number" value="0" name="thursday2" /> 
+		</td>
+    </div>
+	<div>
+		<td align="center" width="38">
+        <label for="name">Friday:</label>
+        <input type="number" value="0" name="friday2" />
+		</td>
+    </div>
+	<div>
+		<td align="center" width="38">
+        <label for="name">Saturday:</label>
+        <input type="number" value="0" name="saturday2" /> 
+		</td>
+	</table>
+	<br>
+	
+	<input type="submit" name="submit" value="Submit Timesheet">
+
 </form>
-</body>
+
+<?php
+
+if(isset($_POST['submit']) && !empty($_POST['submit'])){
+	echo "test test test test test \n";
+	$sunday1 = $_POST['sunday1'];
+	$monday1 = $_POST['monday1'];
+	$tuesday1 = $_POST['tuesday1'];
+	$wednesday1 = $_POST['wednesday1'];
+	$thursday1 = $_POST['thursday1'];
+	$friday1 = $_POST['friday1'];
+	$saturday1 = $_POST['saturday1'];
+	$sunday2 = $_POST['sunday2'];
+	$monday2 = $_POST['monday2'];
+	$tuesday2 = $_POST['tuesday2'];
+	$wednesday2 = $_POST['wednesday2'];
+	$thursday1 = $_POST['thursday1'];
+	$friday2 = $_POST['friday2'];
+	$saturday2 = $_POST['saturday2'];
+	
+	$insert =  "INSERT INTO timesheets (total_hours, status, sunday1, monday1, tuesday1, wednesday1, "; 
+	$insert .= "thursday1, friday1, saturday1, sunday2, monday2, tuesday2, wednesday2, thursday2, ";
+	$insert .= "friday2, saturday2) VALUES ";
+	$insert .= "('40', 'Pending', '$sunday1', '$monday1', '$tuesday1', '$wednesday1', '$thursday1', '$friday1', '$saturday1', ";
+	$insert .= "'$sunday2', '$monday2', '$tuesday2', '$wednesday2', '$thursday2', '$friday2', '$saturday2')";
+	
+	$insertquery = mysqli_query($dbh, $insert);
+	if(!$insertquery){
+					echo "Timesheet Query returned false." . mysqli_error($dbh) . "\n";
+					}else
+						echo "Timesheet Query worked!\n";
+	
+	
+
+	$sql = "SELECT s.bannerid FROM students s JOIN ";
+	$sql .= "users u ON (s.userid = u.userid) WHERE ";
+	$sql .= "u.userid = $userid";
+	
+	$query = mysqli_query($dbh, $sql);
+	if(!$query){
+		echo "Select bannerid Query returned false." . mysqli_error($dbh) . "\n";
+					}else
+						echo "Select bannerid Query worked!\n";
+					$result = mysqli_fetch_assoc($query);
+					$dbbannerid = $row['bannerid'];
+	
+	$date = date("Y-m-d");
+	$insert2 = "INSERT INTO studenttimesheets (bannerid, timesheetsid, fieldsiteid, coordinatorid, lastmodified) ";
+	$insert2 .= "VALUES ('$dbbannerid', 'tsidPlaceholder', 'fsidPlaceholder', 'coidPlaceholder', '$date')";
+	
+	$insertquery2 = mysqli_query($dbh, $insert2);
+	if(!$insertquery2){
+		echo "studenttimesheets Insert Query returned false." . mysqli_error($dbh) . "\n";
+					}else
+						echo "studenttimesheets Insert Query worked!\n";
+	
+	
+	}
+
+
+
+?>
+    
+  </body>
 </html>
 
 

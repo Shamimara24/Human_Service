@@ -27,8 +27,9 @@ session_start();
 			<p>Password</p>
 			<input type="password" name="password" placeholder="Enter Password Here">
 			<input type="submit" name="login" value="Login">
-			<p class="message"><a>Sign up for an account<br><br></a></p>
+			<p class="message"><a href='#'>Sign up for an account<br><br></a></p>
 			<a href="#">Forget your password?</a>
+		
 		
 		
 		<form class="register-form">
@@ -51,7 +52,7 @@ session_start();
 		<input type="submit" name="register" value="Register">
 		<p class="message"><a href="#">Already have an account?</a></p>
 		</form>
-	
+		
         </div>	
 		</div>
 		

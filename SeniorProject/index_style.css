@@ -16,9 +16,9 @@ body{
 
 .login-box{
 
-        width: 330px;
+        width: 320px;
 
-        height: auto;
+        height: 420px;
 
         background: rgba(0, 0, 0, 0.5);
 
@@ -44,6 +44,13 @@ body{
         position: absolute;
         top: -50px;
         left: calc(50% - 50px);
+}
+
+
+
+}
+
+
 }
 
 h1{
