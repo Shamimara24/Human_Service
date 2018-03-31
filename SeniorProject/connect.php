@@ -2,9 +2,8 @@
 
 ConnectDB();
 // NOTE: this file has a password, and so should not be world-readable.
-// Usually it would be mode 600, with a ACL permitting the webserver in.  
+// Usually it would be mode 600, with a ACL permitting the webserver in.
 // But it's like this because you have to use it as sample code.
-
 // ConnectDB() - takes no arguments, returns database handle
 // USAGE: $dbh = ConnectDB();
 function ConnectDB() {
@@ -16,15 +15,13 @@ function ConnectDB() {
     $dbname   = 'rodrigueb6';           // For elvis, your MySQL Username is repeated here
 
    try {
-       $dbh = new PDO("mysql:host=$hostname;dbname=$dbname",
-                      $username, $password);
+       $dbh = mysqli_connect($hostname, $username,
+                      $password, $dbname);
     }
-    catch(PDOException $e) {
-        die ('PDO error in "ConnectDB()": ' . $e->getMessage() );
+    catch(int $e) {
+        die ('mysqli error in "ConnectDB()": ' . $dbh->connect_errno);
     }
-
-    return $dbh; 
+    return $dbh;
 }
 
 ?>
-
