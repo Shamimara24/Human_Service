@@ -28,7 +28,7 @@ if ($conn->connect_error) {
 } 
 else{
 $sql = "INSERT INTO !!!TABLE!!! (Sunday, Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday2, Monday2, Tuesday2, Wednesday2, Thursday2, Friday2, Saturday2)
-VALUES ('sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday2', 'monday2', 'tuesday2', 'wednesday2', 'thursday2', 'friday2', 'saturday2')";
+VALUES ('Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday2', 'Monday2', 'Tuesday2', 'Wednesday2', 'Thursday2', 'Friday2', 'Saturday2')";
 
 
 
