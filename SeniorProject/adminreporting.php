@@ -13,7 +13,7 @@ session_start();
 $userid = $_SESSION['userid'];
 $username = $_SESSION['username'];
 
-$sql = "SELECT CONCAT(firstname, ' ' , lastname) AS fullName FROM users ORDER BY firstname ASC;";
+$sql = "SELECT CONCAT(firstname, ' ' , lastname) AS fullName FROM users where roleId = 2 and active = 1 order BY firstname ASC;";
 $result = mysqli_query($dbh,$sql);
 
 
@@ -129,6 +129,10 @@ echo "</table>";
    document.getElementById('date').value = (new Date()).format("m/dd/yy");
 </script>
 </form>
+
+<form method="post" action="export.php">
+				<input type="submit" name="export" class="btn btn-success" value="Export" />
+				</form>
 </div>
 
 </form>

@@ -82,11 +82,11 @@ if ($_POST['login']){
 
 
                                                         if($dbrole == 1){
-                                                                header('Location: http://elvis.rowan.edu/~whitek65/SeniorProjectFinal/admindashboard.php');
+                                                                header('Location: http://elvis.rowan.edu/~diamondj7/SeniorProject/admindashboard.php');
                                                                 }
                                                         else if($dbrole ==2){
 
-                                                header('Location: http://elvis.rowan.edu/~whitek65/SeniorProjectFinal/dashboard.php');
+                                                header('Location: http://elvis.rowan.edu/~diamondj7/SeniorProject/dashboard.php');
                                                                         }
                                                 exit();
 
