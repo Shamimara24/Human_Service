@@ -189,6 +189,9 @@ left: 50%;
 margin-top:50%;
 }
 
+p.double {
+border-style: double;
+}
 
 
 
