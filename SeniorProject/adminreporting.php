@@ -124,10 +124,6 @@ echo "</table>";
 ?>
 </center>
 
-
-<script>
-   document.getElementById('date').value = (new Date()).format("m/dd/yy");
-</script>
 </form>
 
 <form method="post" action="export.php">
