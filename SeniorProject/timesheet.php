@@ -43,6 +43,8 @@ $username = $_SESSION['username'];
     <link rel="stylesheet" href="style.css">
 	
 	<?php
+	
+	
 if($_POST['submit']){
 		$sunday1 = $_POST['Sunday'];
 
@@ -104,33 +106,28 @@ if($_POST['submit']){
 </head>
 <body>
 
-    <div class="nav">
-
+  <div class="nav">
         <img src="https://www.prepsportswear.com/media/images/college_logos/300x300/2126241_mktg_logo.png" class="mainavatar">
-
             <label for="toggle">&#9776;</label>
-
         <input type="checkbox" id="toggle"/>
-
         <div class="menu">
-
                 <a href="dashboard.php"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
-
                 <a href="timesheets.php"><i class="fas fa-clock"></i> Timesheet</a>
-
                 <a href="connections.php"><i class="fas fa-users"></i> Connections</a>
-
                 <a href="profile.php"><i class="fas fa-user"></i> Profile</a>
-
-                <a href="login.php" style="float:right"><i class="fas fa-sign-out-alt"></i></a>
-
+                <a href="login.php" style="float:right;font-size:20px;color:white" ><i class="fas fa-sign-out-alt"></i></a>
         </div>
-
     </div>
-<body>
+
 <div style="width: 600px; text-align: left; padding: 15px;">
 <form name="Timesheet" method="post" action="./timesheet.php">
-<p><b>Timesheet</b></p>
+
+
+<div class="heading">
+<br>
+ <h2 align="center">Timesheet</h2>
+    <br></br>
+  </div>
 
 <fieldset>
 <legend> Week 1 </legend>
@@ -147,31 +144,31 @@ if($_POST['submit']){
 
 <tr><th align="center" width="38">Hours</th>
 
-<td align="center" width="38"><input type="number" name="Monday" size="1" maxlength="1" value=""
+<td align="center" width="38"><input type="number" name="Monday" size="1" maxlength="1" value="0"
  onkeypress="return inputLimiter(event,'Numbers')"  onblur="calc()" min="0" max="8">
 </td>
 
-<td align="center" width="38"><input type="number" name="Tuesday" size="1" maxlength="1" value=""
+<td align="center" width="38"><input type="number" name="Tuesday" size="1" maxlength="1" value="0"
  onkeypress="return inputLimiter(event,'Numbers')" onblur="calc()" min="0" max="8">
 </td>
 
-<td align="center" width="38"><input type="number" name="Wednesday" size="1" maxlength="1" value=""
+<td align="center" width="38"><input type="number" name="Wednesday" size="1" maxlength="1" value="0"
  onkeypress="return inputLimiter(event,'Numbers')"  onblur="calc()" min="0" max="8">
 </td>
 
-<td align="center" width="38"><input type="number" name="Thursday" size="1" maxlength="1" value=""
+<td align="center" width="38"><input type="number" name="Thursday" size="1" maxlength="1" value="0"
  onkeypress="return inputLimiter(event,'Numbers')"  onblur="calc()" min="0" max="8">
 </td>
 
-<td align="center" width="38"><input type="number" name="Friday" size="1" maxlength="1" value=""
+<td align="center" width="38"><input type="number" name="Friday" size="1" maxlength="1" value="0"
  onkeypress="return inputLimiter(event,'Numbers')"  onblur="calc()" min="0" max="8">
 </td>
 
-<td align="center" width="38"><input type="number" name="Saturday" size="1" maxlength="1" value=""
+<td align="center" width="38"><input type="number" name="Saturday" size="1" maxlength="1" value="0"
  onkeypress="return inputLimiter(event,'Numbers')"  onblur="calc()" min="0" max="8">
 </td>
 
-<td align="center" width="38"><input type="number" name="Sunday" size="1" maxlength="1" value=""
+<td align="center" width="38"><input type="number" name="Sunday" size="1" maxlength="1" value="0"
  onkeypress="return inputLimiter(event,'Numbers')"  onblur="calc()" min="0" max="8">
 </td>
 
@@ -197,35 +194,35 @@ if($_POST['submit']){
 <td align="center" width="38"> Total Hours</td></tr>
 <tr><th align="center" width="38">Hours</th>
 
-<td align="center" width="38"><input type="number" name="Monday2" size="1" maxlength="1" value=""
+<td align="center" width="38"><input type="number" name="Monday2" size="1" maxlength="1" value="0"
  onkeypress="return inputLimiter(event,'Numbers')"  onblur="calc()" min="0" max="8">
 </td>
 
-<td align="center" width="38"><input type="number" name="Tuesday2" size="1" maxlength="1" value=""
+<td align="center" width="38"><input type="number" name="Tuesday2" size="1" maxlength="1" value="0"
  onkeypress="return inputLimiter(event,'Numbers')" onblur="calc()" min="0" max="8">
 </td>
 
-<td align="center" width="38"><input type="number" name="Wednesday2" size="1" maxlength="1" value=""
+<td align="center" width="38"><input type="number" name="Wednesday2" size="1" maxlength="1" value="0"
  onkeypress="return inputLimiter(event,'Numbers')"  onblur="calc()" min="0" max="8">
 </td>
 
-<td align="center" width="38"><input type="number" name="Thursday2" size="1" maxlength="1" value=""
+<td align="center" width="38"><input type="number" name="Thursday2" size="1" maxlength="1" value="0"
  onkeypress="return inputLimiter(event,'Numbers')"  onblur="calc()" min="0" max="8">
 </td>
 
-<td align="center" width="38"><input type="number" name="Friday2" size="1" maxlength="1" value=""
+<td align="center" width="38"><input type="number" name="Friday2" size="1" maxlength="1" value="0"
  onkeypress="return inputLimiter(event,'Numbers')"  onblur="calc()" min="0" max="8">
 </td>
 
-<td align="center" width="38"><input type="number" name="Saturday2" size="1" maxlength="1" value=""
+<td align="center" width="38"><input type="number" name="Saturday2" size="1" maxlength="1" value="0"
  onkeypress="return inputLimiter(event,'Numbers')"  onblur="calc()" min="0" max="8">
 </td>
 
-<td align="center" width="38"><input type="number" name="Sunday2" size="1" maxlength="1" value=""
+<td align="center" width="38"><input type="number" name="Sunday2" size="1" maxlength="1" value="0"
  onkeypress="return inputLimiter(event,'Numbers')"  onblur="calc()" min="0" max="8">
 </td>
 
-<td align="center" width="60"><input class="right" type="number" name="Total" readonly="readonly" size="5" value="">
+<td align="center" width="100"><input class="right" type="number" name="Total" readonly="readonly" size="5" value="">
 </td>
 </tr>
 </table>
