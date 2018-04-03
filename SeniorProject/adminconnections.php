@@ -12,13 +12,21 @@ $username = $_SESSION['username'];
 
 $sql = "SELECT firstname, lastname, email, concat('(', substring(phone_number, 1, 3), ') ',
 substring(phone_number, 4, 3), '-',  substring(phone_number, 7, 9)) AS phone_number
-FROM users";
+FROM users WHERE roleID = '1'";
+
+
+$sql2 = "SELECT firstname, lastname, email, concat('(', substring(phone_number, 1, 3), ') ',
+substring(phone_number, 4, 3), '-',  substring(phone_number, 7, 9)) AS phone_number
+FROM users WHERE roleID = '2'";
+
+
+
 
 //$sql = "SELECT * FROM users";
 $result = mysqli_query($dbh,$sql);
 
+$response = mysqli_query($dbh,$sql2);
 ?>
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -30,7 +38,6 @@ $result = mysqli_query($dbh,$sql);
     <link rel="stylesheet" href="style.css">
     <script defer src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
 </head>
-
 
 
 <body>
@@ -49,30 +56,46 @@ $result = mysqli_query($dbh,$sql);
 
 
 <div  class="heading">
-<br></br>
+<br>
  <h2 align="center">Connections</h2>
 </div>
 
 
 <form align="center"  name="Reports">
+<!-- <p class="double"> -->
+<font color="blue"><h3>Supervisors</h3></font>
         <?php
 if ($result->num_rows > 0) {
     // output data of each row
     while($row = $result->fetch_assoc()) {
-            echo "Name:  ". $row["firstname"]. " ". $row["lastname"] . "" ;
+            echo "". "<b>",$row["firstname"],"</b>" . " " . "<b>", $row["lastname"],"</b>" . "" ;
+            echo "<br> Email Address:  ". $row["email"] . "" ;
+            echo "<br> Phone Number:  ". $row["phone_number"] . "<br><br>" ;
+    }
+} else {
+    echo "Currently no supervisors";
+}
+?>
+<!-- </p> -->
+
+
+
+<!-- <p class="double"> -->
+<font color="Blue"><h3>Students</h3></font>
+        <?php
+if ($response->num_rows > 0) {
+    // output data of each row
+    while($row = $response->fetch_assoc()) {
+            echo "". "<b>",$row["firstname"],"</b>" . " " . "<b>", $row["lastname"],"</b>" . "" ;
             echo "<br> Email Address:  ". $row["email"] . "" ;
             echo "<br> Phone Number:  ". $row["phone_number"] . "<br><br>";
     }
 } else {
-    echo "0 results";
+    echo "Currently no students";
 }
 ?>
+<!-- </p> -->
 
-
-
-<script>
-   document.getElementById('date').value = (new Date()).format("m/dd/yy");
-</script>
 </form>
 </div>
 </body>
