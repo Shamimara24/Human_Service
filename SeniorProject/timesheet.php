@@ -42,6 +42,8 @@ $username = $_SESSION['username'];
 
     <link rel="stylesheet" href="style.css">
 	
+	<script defer src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
+	
 	<?php
 	
 if(isset($_GET["timesheetsid"])){
