@@ -44,6 +44,79 @@ $username = $_SESSION['username'];
 	
 	<?php
 	
+if(isset($_GET["timesheetsid"])){
+	$timesheetsid = $_GET["timesheetsid"];
+	
+	$query = "SELECT t.* FROM timesheets t JOIN 
+	studenttimesheets st ON (t.timesheetsid = st.timesheetsid) JOIN 
+	students s ON (st.bannerid = s.bannerid) JOIN 
+	users u ON (s.userid = u.userid) WHERE
+	u.userid = $userid AND t.timesheetsid = $timesheetsid";
+	
+	$result = mysqli_query($dbh, $query);
+	
+	if($result){
+		while($row = mysqli_fetch_array($result)){
+		$sunday1 = $row['sunday1'];
+
+        $monday1 = $row['monday1'];
+
+        $tuesday1 = $row['tuesday1'];
+
+        $wednesday1 = $row['wednesday1'];
+
+        $thursday1 = $row['thursday1'];
+
+        $friday1 = $row['friday1'];
+
+        $saturday1 = $row['saturday1'];
+
+        $sunday2 = $row['sunday2'];
+
+        $monday2 = $row['monday2'];
+
+        $tuesday2 = $row['tuesday2'];
+
+        $wednesday2 = $row['wednesday2'];
+
+        $thursday2 = $row['thursday2'];
+
+        $friday2 = $row['friday2'];
+
+        $saturday2 = $row['saturday2'];
+		}
+		
+	}else
+		echo "GET timesheet query failed. Error: " . mysqli_error($dbh) . "\n";
+}else{
+	    $sunday1 = "0";
+
+        $monday1 = "0";
+
+        $tuesday1 = "0";
+
+        $wednesday1 = "0";
+
+        $thursday1 = "0";
+
+        $friday1 = "0";
+
+        $saturday1 = "0";
+
+        $sunday2 = "0";
+
+        $monday2 = "0";
+
+        $tuesday2 = "0";
+
+        $wednesday2 = "0";
+
+        $thursday2 = "0";
+
+        $friday2 = "0";
+
+        $saturday2 = "0";
+}
 	
 if($_POST['submit']){
 		$sunday1 = $_POST['Sunday'];
@@ -68,23 +141,26 @@ if($_POST['submit']){
 
         $wednesday2 = $_POST['Wednesday2'];
 
-        $thursday1 = $_POST['Thursday2'];
+        $thursday2 = $_POST['Thursday2'];
 
         $friday2 = $_POST['Friday2'];
 
         $saturday2 = $_POST['Saturday2'];
 		
-		echo print_r($_POST);
+		$totalhr = $_POST['Total'];
 		
-		$insert =  "INSERT INTO timesheets (total_hours, status, sunday1, monday1, tuesday1, wednesday1, ";
+		$todaysdate = time();
+		
+		
+		$insert =  "INSERT INTO timesheets (total_hours, status, datestart, sunday1, monday1, tuesday1, wednesday1, ";
 
         $insert .= "thursday1, friday1, saturday1, sunday2, monday2, tuesday2, wednesday2, thursday2, ";
 
-        $insert .= "friday2, saturday2) VALUES ";
+        $insert .= "friday2, saturday2, userid) VALUES ";
 
-        $insert .= "('40', 'Pending', '$sunday1', '$monday1', '$tuesday1', '$wednesday1', '$thursday1', '$friday1', '$saturday1', ";
+        $insert .= "('$totalhr', 'Pending', '$todaysdate', '$sunday1', '$monday1', '$tuesday1', '$wednesday1', '$thursday1', '$friday1', '$saturday1', ";
 
-        $insert .= "'$sunday2', '$monday2', '$tuesday2', '$wednesday2', '$thursday2', '$friday2', '$saturday2')";
+        $insert .= "'$sunday2', '$monday2', '$tuesday2', '$wednesday2', '$thursday2', '$friday2', '$saturday2', '$userid')";
 
 
 
@@ -92,11 +168,44 @@ if($_POST['submit']){
 		
 		  if(!$insertquery){
 
-                                        echo "Timesheet Query returned false." . mysqli_error($dbh) . "\n";
+            echo "Timesheet Query returned false." . mysqli_error($dbh) . "\n";
 
-                                        }else
+            }else
 
-                                                echo "Timesheet Query worked!\n";
+                echo "Timesheet Query worked!\n";
+				
+				$bannerquery = "SELECT bannerid FROM students WHERE userid = $userid";
+				$bannerresult = mysqli_query($dbh, $bannerquery);
+				if($bannerresult){
+					$row = mysqli_fetch_assoc($bannerresult);
+					$bannerid = $row['bannerid'];
+					
+					$idquery = "SELECT timesheetsid FROM timesheets WHERE datestart = $todaysdate
+								AND userid = $userid";
+					$idresult = mysqli_query($dbh, $idquery);
+					if($idresult){
+						$row2 = mysqli_fetch_assoc($idresult);
+						$timesheetsid = $row2['timesheetsid'];
+						
+						
+						$insert = "INSERT INTO studenttimesheets (bannerid, timesheetsid, fieldsiteid, 
+								coordinatorid) VALUES ('$bannerid', '$timesheetsid', '1', 
+								'1')";
+								
+						$insertstutimesheets = mysqli_query($dbh, $insert);
+						if($insertstutimesheets){
+							echo "Studenttimesheets insert query success! \n";
+						}else{
+							echo "Studenttimesheets insert query failed. timesheetsid: $timesheetsid Error: " . mysqli_error($dbh);
+						}
+								
+					}else{
+						echo "Select timesheetid query failed. Error: " . mysqli_error($dbh) . "\n";
+					}
+					
+				}else{
+					echo "Select banenrid query failed. Error: " . mysqli_error($dbh) . "\n";
+				}
 
 
        
@@ -144,31 +253,31 @@ if($_POST['submit']){
 
 <tr><th align="center" width="38">Hours</th>
 
-<td align="center" width="38"><input type="number" name="Monday" size="1" maxlength="1" value="0"
+<td align="center" width="38"><input type="number" name="Monday" size="1" maxlength="1" value="<?php echo $monday1 ?>"
  onkeypress="return inputLimiter(event,'Numbers')"  onblur="calc()" min="0" max="8">
 </td>
 
-<td align="center" width="38"><input type="number" name="Tuesday" size="1" maxlength="1" value="0"
+<td align="center" width="38"><input type="number" name="Tuesday" size="1" maxlength="1" value="<?php echo $tuesday1 ?>"
  onkeypress="return inputLimiter(event,'Numbers')" onblur="calc()" min="0" max="8">
 </td>
 
-<td align="center" width="38"><input type="number" name="Wednesday" size="1" maxlength="1" value="0"
+<td align="center" width="38"><input type="number" name="Wednesday" size="1" maxlength="1" value="<?php echo $wednesday1 ?>"
  onkeypress="return inputLimiter(event,'Numbers')"  onblur="calc()" min="0" max="8">
 </td>
 
-<td align="center" width="38"><input type="number" name="Thursday" size="1" maxlength="1" value="0"
+<td align="center" width="38"><input type="number" name="Thursday" size="1" maxlength="1" value="<?php echo $thursday1 ?>"
  onkeypress="return inputLimiter(event,'Numbers')"  onblur="calc()" min="0" max="8">
 </td>
 
-<td align="center" width="38"><input type="number" name="Friday" size="1" maxlength="1" value="0"
+<td align="center" width="38"><input type="number" name="Friday" size="1" maxlength="1" value="<?php echo $friday1 ?>"
  onkeypress="return inputLimiter(event,'Numbers')"  onblur="calc()" min="0" max="8">
 </td>
 
-<td align="center" width="38"><input type="number" name="Saturday" size="1" maxlength="1" value="0"
+<td align="center" width="38"><input type="number" name="Saturday" size="1" maxlength="1" value="<?php echo $saturday1 ?>"
  onkeypress="return inputLimiter(event,'Numbers')"  onblur="calc()" min="0" max="8">
 </td>
 
-<td align="center" width="38"><input type="number" name="Sunday" size="1" maxlength="1" value="0"
+<td align="center" width="38"><input type="number" name="Sunday" size="1" maxlength="1" value="<?php echo $sunday1 ?>"
  onkeypress="return inputLimiter(event,'Numbers')"  onblur="calc()" min="0" max="8">
 </td>
 
@@ -194,31 +303,31 @@ if($_POST['submit']){
 <td align="center" width="38"> Total Hours</td></tr>
 <tr><th align="center" width="38">Hours</th>
 
-<td align="center" width="38"><input type="number" name="Monday2" size="1" maxlength="1" value="0"
+<td align="center" width="38"><input type="number" name="Monday2" size="1" maxlength="1" value="<?php echo $monday2 ?>"
  onkeypress="return inputLimiter(event,'Numbers')"  onblur="calc()" min="0" max="8">
 </td>
 
-<td align="center" width="38"><input type="number" name="Tuesday2" size="1" maxlength="1" value="0"
+<td align="center" width="38"><input type="number" name="Tuesday2" size="1" maxlength="1" value="<?php echo $tuesday2 ?>"
  onkeypress="return inputLimiter(event,'Numbers')" onblur="calc()" min="0" max="8">
 </td>
 
-<td align="center" width="38"><input type="number" name="Wednesday2" size="1" maxlength="1" value="0"
+<td align="center" width="38"><input type="number" name="Wednesday2" size="1" maxlength="1" value="<?php echo $wednesday2 ?>"
  onkeypress="return inputLimiter(event,'Numbers')"  onblur="calc()" min="0" max="8">
 </td>
 
-<td align="center" width="38"><input type="number" name="Thursday2" size="1" maxlength="1" value="0"
+<td align="center" width="38"><input type="number" name="Thursday2" size="1" maxlength="1" value="<?php echo $thursday2 ?>"
  onkeypress="return inputLimiter(event,'Numbers')"  onblur="calc()" min="0" max="8">
 </td>
 
-<td align="center" width="38"><input type="number" name="Friday2" size="1" maxlength="1" value="0"
+<td align="center" width="38"><input type="number" name="Friday2" size="1" maxlength="1" value="<?php echo $friday2 ?>"
  onkeypress="return inputLimiter(event,'Numbers')"  onblur="calc()" min="0" max="8">
 </td>
 
-<td align="center" width="38"><input type="number" name="Saturday2" size="1" maxlength="1" value="0"
+<td align="center" width="38"><input type="number" name="Saturday2" size="1" maxlength="1" value="<?php echo $saturday2 ?>"
  onkeypress="return inputLimiter(event,'Numbers')"  onblur="calc()" min="0" max="8">
 </td>
 
-<td align="center" width="38"><input type="number" name="Sunday2" size="1" maxlength="1" value="0"
+<td align="center" width="38"><input type="number" name="Sunday2" size="1" maxlength="1" value="<?php echo $sunday2 ?>"
  onkeypress="return inputLimiter(event,'Numbers')"  onblur="calc()" min="0" max="8">
 </td>
 
