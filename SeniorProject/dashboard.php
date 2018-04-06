@@ -137,7 +137,7 @@ SELECT t.*, CONCAT(us.firstname, ' ', us.lastname) AS SupervisorName, st.coordin
               students s ON (st.bannerid = s.bannerid) JOIN
 
                           users u ON (s.userid = u.userid) JOIN
-
+curre
               coordinators c ON (st.coordinatorid = c.coordinatorid) JOIN
 
                           users us ON (c.user_id = us.userid) WHERE
@@ -163,7 +163,7 @@ while($row = mysqli_fetch_array($results)){
                 <td><?php echo $row['total_hours']?></td>
                 <td><?php echo $row['SupervisorName']?></td>
                 <td><?php echo $row['status']?></td>
-                <td><?php echo "(<a href='./timesheet.php?timesheetsid=" . $row['timesheetsid'] . "'>Edit</a>)"?></td>
+                <td><?php echo "(<a href='./currenttimesheet.php?timesheetsid=" . $row['timesheetsid'] . "'>Edit</a>)"?></td>
         </tr>
         <?php
 }
@@ -175,7 +175,7 @@ while($row = mysqli_fetch_array($results)){
 
 
 
-             <br></br><a href="timesheet.php"><input type='submit' name='submit' value='Create new timesheet'></a><br></br>
+             <br></br><a href="currenttimesheet.php"><input type='submit' name='submit' value='Create new timesheet'></a><br></br>
 
 
 
