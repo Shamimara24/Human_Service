@@ -22,44 +22,22 @@ $username = $_SESSION['username'];
 
 
 
-
-
-
-
-
-
 <!DOCTYPE html>
-
 <html lang="en">
-
 <head>
-
     <meta charset="utf-8">
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>Dashboard</title>
-
     <link rel="stylesheet" href="style.css">
-
     <script defer src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
-
 </head>
-
 <body>
-
     <div class="nav">
-
         <img src="https://www.prepsportswear.com/media/images/college_logos/300x300/2126241_mktg_logo.png" class="mainavatar">
-
             <label for="toggle">&#9776;</label>
-
         <input type="checkbox" id="toggle"/>
-
         <div class="menu">
-
                 <a href="dashboard.php"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
-
                 <a href="timesheets.php"><i class="fas fa-clock"></i> Timesheet</a>
 
                 <a href="connections.php"><i class="fas fa-users"></i> Connections</a>
@@ -141,7 +119,7 @@ while($row = mysqli_fetch_array($results)){
                 <td><?php echo $row['total_hours']?></td>
                 <td><?php echo $row['SupervisorName']?></td>
                 <td><?php echo $row['status']?></td>
-                <td><?php echo "(<a href='./timesheet.php?timesheetsid=" . $row['timesheetsid'] . "'>Edit</a>)"?></td>
+                <td><?php echo "(<a href='./currernttimesheet.php?timesheetsid=" . $row['timesheetsid'] . "'>Edit</a>)"?></td>
         </tr>
         <?php
 }
@@ -155,7 +133,7 @@ while($row = mysqli_fetch_array($results)){
 
 </div>
 <div>
-              <a href="timesheet.php"><input type='submit' name='submit' value='Create new timesheet'></a>
+              <a href="currenttimesheet.php"><input type='submit' name='submit' value='Create new timesheet'></a>
 
 </div>
 
