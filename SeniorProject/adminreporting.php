@@ -1,7 +1,5 @@
 <?php
 
-
-
 // Connect to the database
 
 error_reporting(E_ALL ^ E_NOTICE);
@@ -11,28 +9,34 @@ $dbh = ConnectDB();
 session_start();
 
 
+
 $userid = $_SESSION['userid'];
 $username = $_SESSION['username'];
+
 $sql = "SELECT CONCAT(firstname, ' ' , lastname) AS fullName FROM users where roleId = 2 and active = 1 order BY firstname ASC;";
 $result = mysqli_query($dbh,$sql);
 
+
 $sql2 = "select datestart from timesheets";
 $result2 = mysqli_query($dbh,$sql2);
+
+
 
 $tbl = "select concat(firstname, ' ', lastname) as name, timesheetsid, datestart, total_hours, coordinatorid, status ";
 $tbl .="from rodrigueb6.users ";
 $tbl .= "join rodrigueb6.students s using (userID) ";
 $tbl .= "join rodrigueb6.studenttimesheets sts using (bannerID) ";
 $tbl .= "join rodrigueb6.timesheets ts using (timesheetsID);";
-$tbl .= "";
 $tblresults = mysqli_query($dbh,$tbl) or die('error getting database');
 
 
 
-
 ?>
+
 <!DOCTYPE html>
+
 <html lang="en">
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -41,8 +45,11 @@ $tblresults = mysqli_query($dbh,$tbl) or die('error getting database');
     <link rel="stylesheet" href="style.css">
     <script defer src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
 </head>
+
 <body>
+
     <div class="nav">
+
         <img src="https://www.prepsportswear.com/media/images/college_logos/300x300/2126241_mktg_logo.png" class="mainavatar">
             <label for="toggle">&#9776;</label>
         <input type="checkbox" id="toggle"/>
@@ -54,13 +61,18 @@ $tblresults = mysqli_query($dbh,$tbl) or die('error getting database');
                 <a href="login.php" style="float:right;font-size:20px;color:white" ><i class="fas fa-sign-out-alt"></i></a>
         </div>
     </div>
- Se<div class="heading">
+
+
+<div class="heading">
 <br>
  <h2 align="center">Reports</h2>
 </div>
 
+
+
 <div class="form">
 <form action="search.php" method="get">
+
 <form align="center"  name="Reports">
 <p>Student:
 <select>
@@ -71,9 +83,14 @@ $tblresults = mysqli_query($dbh,$tbl) or die('error getting database');
         <?php endwhile;?>
 </select>
 
-<br></br>
+
+
+
+
+<br />
         <button type = "submit">Submit</button>
 </br>
+
 
 <center>
 <?php
@@ -84,43 +101,40 @@ echo "<tr><th>&nbsp &nbsp Student's Name &nbsp &nbsp </th>
         <th>&nbsp &nbsp Total Hours &nbsp &nbsp &nbsp  </th>
         <th>&nbsp &nbsp CoordinatorID  &nbsp  &nbsp  </th>
         <th>&nbsp &nbsp Status &nbsp &nbsp </th>
-        <th>&nbsp &nbsp Select &nbsp &nbsp</th></tr>";
+		<th> Check Box </th></tr>";
+
 while ($row = mysqli_fetch_array($tblresults,MYSQLI_ASSOC)){
-        echo "<tr><td>";
-        echo $row['name'];
-        echo "</td><td>";
-        echo $row['timesheetsid'];
-        echo "</td><td>";
-        echo $row['datestart'];
-        echo "</td><td>";
-        echo $row['total_hours'];
-        echo "</td><td>";
-        echo $row['coordinatorid'];
-        echo "</td><td>";
-        echo $row['status'];
-        echo "</td><td>";
-        echo "Checkboxes Will Go Here!";
-        echo "</td></tr>";
+        echo '  
+       <tr>  
+         <td>'.$row["name"].'</td>  
+         <td>'.$row["timesheetid"].'</td>  
+         <td>'.$row["datestart"].'</td>  
+         <td>'.$row["total_hours"].'</td>  
+         <td>'.$row["coordinatorid"].'</td>
+		 <td>'.$row["status"].'</td>
+		 <td> &nbsp &nbsp &nbsp <input type="checkbox" name="name1" /></td>
+       </tr>  
+        ';
+
 }
+
 echo "</table>";
+
 ?>
 </center>
+
+
+<script>
+   document.getElementById('date').value = (new Date()).format("m/dd/yy");
+</script>
 </form>
-<br>
-
-
-
-<center>
-<input style="padding:5px" type="submit" name="export" class="btn btn-success" value="Approve" />
-&nbsp &nbsp
-<input style="padding:5px" type="submit" name="export" class="btn btn-success" value="Reject" />
-</center>
-
-<br><br></br></br>
+<br />
 <form method="post" action="export.php">
-                                <input style = "padding:10px" type="submit" name="export" class="btn btn-success" value="Export" />
-                                </form>
+				<input type="submit" name="export" class="btn btn-success" value="Export" />
+				</form>
 </div>
+
 </form>
 </div></body>
 </html>
+
