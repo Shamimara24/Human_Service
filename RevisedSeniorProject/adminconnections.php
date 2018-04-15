@@ -54,7 +54,6 @@ $tblresults = mysqli_query($dbh,$tbl) or die('error getting database');
     </button>
     <div class="dropdown-content" id="myDropdown">
         <a href="adminreporting.php">View Timesheets</a>
-        <a href="admin.php">Reports</a>
     </div>
   </div>
         <a href="adminconnections.php">Connections</a>
