@@ -1,1 +1,29 @@
+This file contains a list of all of the issues that remain to be addressed:
 
+
+1) Clean up the login page
+        • Seperate the registration field by creating a new registration page to avoid display issues on the login page
+2) Ensure html page display stability
+        • Investigate questions marks (?) that has been sceen recently with the addition of the new menu feature.
+        • Verify page layout is consitent among pages for visual appeal.
+                        • Color, font, text, size, etc
+3) Fix reporting page funtionality
+        • Fix page to display timesheets based on the student name dropdown query
+        • Approve and Reject buttons need to be functional and update database 
+4) Enhance student dashboard page
+        • Display total number of hours remaing for student currently logged in
+                • Possible colored key for easy visual appeal of thresholds
+                           • Red - extremely close to 120 hour maximum
+                           • Yellow - mildly close to 120 hour maximum
+5) Enhance admin dashboard page
+        • Display total number of hours remaing for all students
+                • Decending order
+                • Possible colored key for easy visual appeal of thresholds
+                           • Red - extremely close to 120 hour maximum
+                           • Yellow - mildly close to 120 hour maximum
+6) Set up automatic emails
+        • Notification of approve or rejected timesheet
+        • Notification of < 60 hours through semester (for example)
+        • Notification of being close to 120 hour maximum 
+7) Add field site page for administrators which allows for editing of field site information such as name, location, etc.
+8) Add field site information to connections page
