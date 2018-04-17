@@ -5,25 +5,29 @@ ini_set('display_errors', 1);
 include('connect.php');
 $dbh = ConnectDB();
 session_start();
+
 $userid = $_SESSION['userid'];
 $username = $_SESSION['username'];
 
-$sql = "SELECT CONCAT(firstname, ' ' , lastname) AS fullName FROM users where roleId = 2 and active = 1 order BY firstname ASC;";
+
+$sql = "SELECT firstname, lastname, email, concat('(', substring(phone_number, 1, 3), ') ',
+substring(phone_number, 4, 3), '-',  substring(phone_number, 7, 9)) AS phone_number
+FROM users WHERE roleID = '1'";
+
+
+$sql2 = "SELECT firstname, lastname, email, concat('(', substring(phone_number, 1, 3), ') ',
+substring(phone_number, 4, 3), '-',  substring(phone_number, 7, 9)) AS phone_number
+FROM users WHERE roleID = '2'";
+
+
+
+
+//$sql = "SELECT * FROM users";
 $result = mysqli_query($dbh,$sql);
 
-$sql2 = "select datestart from timesheets";
-$result2 = mysqli_query($dbh,$sql2);
-$tbl = "select concat(firstname, ' ', lastname) as name, timesheetsid, unixstamp, total_hours, coordinatorid, status ";
-$tbl .="from rodrigueb6.users ";
-$tbl .= "join rodrigueb6.students s using (userID) ";
-$tbl .= "join rodrigueb6.studenttimesheets sts using (bannerID) ";
-$tbl .= "join rodrigueb6.timesheets ts using (timesheetsID) ";
-$tbl .= "WHERE firstName = '" . $studentname . "' ";
-$tblresults = mysqli_query($dbh,$tbl) or die('error getting database');
-
-
-
+$response = mysqli_query($dbh,$sql2);
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -36,6 +40,7 @@ $tblresults = mysqli_query($dbh,$tbl) or die('error getting database');
 </head>
 
 
+
 <body>
     <div class="nav">
                 <img src="https://www.prepsportswear.com/media/images/college_logos/300x300/2126241_mktg_logo.png" class="mainavatar">
@@ -43,9 +48,6 @@ $tblresults = mysqli_query($dbh,$tbl) or die('error getting database');
                         <br>
                 <b><center><font size="6" color="white">Rowan University Field Experience System</font></center></b>
     </div>
-
-
-
 <div class="navbar">
   <a href="admindashboard.php">Dashboard</a>
   <div class="dropdown">
@@ -54,6 +56,7 @@ $tblresults = mysqli_query($dbh,$tbl) or die('error getting database');
     </button>
     <div class="dropdown-content" id="myDropdown">
         <a href="adminreporting.php">View Timesheets</a>
+        <a href="admin.php">Reports</a>
     </div>
   </div>
         <a href="adminconnections.php">Connections</a>
@@ -61,73 +64,46 @@ $tblresults = mysqli_query($dbh,$tbl) or die('error getting database');
         <a href="login.php" align="right">Logout</a>
 </div>
 
-<center><h1>Timesheet Search</h1></center>
+<center><h1>Connections</h1></center>
 
 
-<div class="form">
-<form action="./adminreporting.php" method="post">
+
+
 <form align="center"  name="Reports">
-<p>Student:
-<select id='studentname' name='studentname'>
+<!-- <p class="double"> -->
+<font color="blue"><h3>Supervisors</h3></font>
         <?php
-        while($row1 = mysqli_fetch_array($result)):;
-        ?>
-        <option><?php echo $row1[0];?></option>
-        <?php endwhile;?>
-</select>
-
-<br />
-        <input type="submit" name="submit" value="Search">
-</br>
-<center>
-<?php
-
-if($_POST['submit']){
-echo "<table border= '1'>";
-echo "<tr><th>&nbsp &nbsp Student's Name &nbsp &nbsp </th>
-        <th>&nbsp &nbsp Timeheet &nbsp &nbsp</th>
-        <th>&nbsp &nbsp Date Submitted  &nbsp &nbsp  </th>
-        <th>&nbsp &nbsp Total Hours &nbsp &nbsp &nbsp  </th>
-        <th>&nbsp &nbsp CoordinatorID  &nbsp  &nbsp  </th>
-        <th>&nbsp &nbsp Status &nbsp &nbsp </th>
-                <th> Check Box </th></tr>";
-while ($row = mysqli_fetch_assoc($tblresults)){
-        echo "
-       <tr>
-         <td>".$row['name']."</td>
-         <td>".$row['timesheetid']."</td>
-         <td>".$row['datestart']."</td>
-         <td>".$row['total_hours']."</td>
-         <td>".$row['coordinatorid']."</td>
-                 <td>".$row['status']."</td>
-                 <td> &nbsp &nbsp &nbsp <input type='checkbox' name='name1' /></td>
-       </tr>
-        ";
-}
-echo "</table>";
+if ($result->num_rows > 0) {
+    // output data of each row
+    while($row = $result->fetch_assoc()) {
+            echo "". "<b>",$row["firstname"],"</b>" . " " . "<b>", $row["lastname"],"</b>" . "" ;
+            echo "<br> Email Address:  ". $row["email"] . "" ;
+            echo "<br> Phone Number:  ". $row["phone_number"] . "<br><br>" ;
+    }
+} else {
+    echo "Currently no supervisors";
 }
 ?>
-</center>
-<script>
-   document.getElementById('date').value = (new Date()).format("m/dd/yy");
-</script>
+<!-- </p> -->
+
+
+<!-- <p class="double"> -->
+<font color="Blue"><h3>Students</h3></font>
+        <?php
+if ($response->num_rows > 0) {
+    // output data of each row
+    while($row = $response->fetch_assoc()) {
+            echo "". "<b>",$row["firstname"],"</b>" . " " . "<b>", $row["lastname"],"</b>" . "" ;
+            echo "<br> Email Address:  ". $row["email"] . "" ;
+            echo "<br> Phone Number:  ". $row["phone_number"] . "<br><br>";
+    }
+} else {
+    echo "Currently no students";
+}
+?>
+<!-- </p> -->
+
 </form>
-<br />
-
-<center>
-<input style="padding:5px" type="submit" name="export" class="btn btn-success" value="Approve" />
-&nbsp &nbsp
-<input style="padding:5px" type="submit" name="export" class="btn btn-success" value="Reject" />
-</center>
-
-<br><br></br></br>
-<form method="post" action="export.php">
-                                <input style = "padding:10px" type="submit" name="export" class="btn btn-success" value="Export" />
-                                </form>
-
-</div>
-</form>
-
 
 
 
@@ -150,7 +126,8 @@ window.onclick = function(e) {
 }
 </script>
 
+</div>
 
-
-</div></body>
+</body>
 </html>
+
