@@ -342,7 +342,7 @@ if($_POST['submit']){
 </div>
 
 <!--<div style="width: 600px; text-align: left; padding: 15px;">-->
-<form name="Timesheet" method="post" action="./timesheet.php">
+<form name="Timesheet" method="post" action="./currenttimesheet.php">
 
 <div class="heading">
   </div>
