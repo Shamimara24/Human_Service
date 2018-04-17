@@ -131,7 +131,6 @@ SELECT t.*, CONCAT(us.firstname, ' ', us.lastname) AS SupervisorName, st.coordin
                           studenttimesheets st ON (t.timesheetsid = st.timesheetsid) JOIN
               students s ON (st.bannerid = s.bannerid) JOIN
                           users u ON (s.userid = u.userid) JOIN
-curre
               coordinators c ON (st.coordinatorid = c.coordinatorid) JOIN
                           users us ON (c.user_id = us.userid) WHERE
               st.coordinatorid IN (SELECT st.coordinatorid FROM timesheets t JOIN
