@@ -302,7 +302,7 @@ if($_POST['submit']){
               while($row = mysqli_fetch_array($results)){
                 echo "<tr>";
                 echo "<td>" . $row['timesheetsid'] . "</td>";
-                echo "<td>" . $row['datestart'] . "</td>";
+                echo "<td>" . $row['unixstamp'] . "</td>";
                 echo "<td>" . $row['total_hours'] . "</td>";
                 echo "<td>" . $row['SupervisorName'] . "</td>";
                 echo "<td>" . $row['status'] . "</td>";
