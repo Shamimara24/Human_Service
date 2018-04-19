@@ -139,7 +139,7 @@ $iresult = "query returned false." . mysqli_error($dbh);
                                         $query = mysqli_query($dbh, "SELECT * FROM users WHERE username='$rusername'");
                                         $numrows = mysqli_num_rows($query);
                                         if($numrows == 1){
-                                                $site = "http://elvis.rowan.edu/~rodrigueb6/SeniorProject";
+                                                $site = "http://elvis.rowan.edu/~mcgrathj2/SeniorProject";
                                                 $webmaster = "rodrigueb6@students.rowan.edu";
                                                 $subject = "New User Account Request (HSFE)";
                                                 $message = "A new user has requested an account.\n";
