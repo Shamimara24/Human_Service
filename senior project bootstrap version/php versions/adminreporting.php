@@ -7,21 +7,11 @@ $dbh = ConnectDB();
 session_start();
 $userid = $_SESSION['userid'];
 $username = $_SESSION['username'];
-
 $sql = "SELECT CONCAT(firstname, ' ' , lastname) AS fullName FROM users where roleId = 2 and active = 1 order BY firstname ASC;";
 $result = mysqli_query($dbh,$sql);
-
 $sql2 = "select datestart from timesheets";
 $result2 = mysqli_query($dbh,$sql2);
-$tbl = "select concat(firstname, ' ', lastname) as name, timesheetsid, unixstamp, total_hours, coordinatorid, status ";
-$tbl .="from rodrigueb6.users ";
-$tbl .= "join rodrigueb6.students s using (userID) ";
-$tbl .= "join rodrigueb6.studenttimesheets sts using (bannerID) ";
-$tbl .= "join rodrigueb6.timesheets ts using (timesheetsID) ";
-$tbl .= "WHERE firstName = '" . $studentname . "' ";
-$tblresults = mysqli_query($dbh,$tbl) or die('error getting database');
 ?>
-
 <!doctype html>
 <html lang="en">
   <head>
@@ -92,8 +82,8 @@ $tblresults = mysqli_query($dbh,$tbl) or die('error getting database');
           <form name="form-time" align="center" action="./adminreporting.php" method="post">
             <div class="btn-toolbar mb-2">
               <div class="btn-group mr-2 pb-2">
-                <input class="btn btn-sm btn-outline-secondary" type="submit" name="export" value="Approve"></input>
-                <input class="btn btn-sm btn-outline-secondary" type="submit" name="export" value="Reject"></input>
+                <input class="btn btn-sm btn-outline-secondary" type="submit" name="approve" value="Approve"></input>
+                <input class="btn btn-sm btn-outline-secondary" type="submit" name="reject" value="Reject"></input>
                 <form method="post" action="export.php">
                   <input class="btn btn-sm btn-outline-secondary" type="submit" name="export" value="Export"></input>
                 </form>
@@ -119,28 +109,60 @@ $tblresults = mysqli_query($dbh,$tbl) or die('error getting database');
                   <th>Total Hours</th>
                   <th>Coordinator ID</th>
                   <th>Status</th>
-                  <th>Checkbox</th>
+                  <th>View Timesheet</th>
+                  <th>Select</th>
                 </tr>
-              <tbody>
-                <?php
+              
+              <?php
+    if($_POST['submit']){
+$studentname = $_POST['studentname'];
+$namesplit = explode(" ", $studentname);
+$name = $namesplit[0]; 
+  
+$tbl = "select concat(firstname, ' ', lastname) as name, timesheetsid, unixstamp, total_hours, 
+    coordinatorid, status ";
+$tbl .="from rodrigueb6.users ";
+$tbl .= "join rodrigueb6.students s using (userID) ";
+$tbl .= "join rodrigueb6.studenttimesheets sts using (bannerID) ";
+$tbl .= "join rodrigueb6.timesheets ts using (timesheetsID) ";
+$tbl .= "WHERE firstName = '" . $name . "' ";
+$tblresults = mysqli_query($dbh,$tbl);
+$tableresult = "";
+
                 while ($row = mysqli_fetch_assoc($tblresults)){
-                echo "
-                  <tr>
-                  <td>".$row['name']."</td>
-                  <td>".$row['timesheetid']."</td>
-                  <td>".$row['datestart']."</td>
-                  <td>".$row['total_hours']."</td>
-                  <td>".$row['coordinatorid']."</td>
-                 <td>".$row['status']."</td>
-                 <td> &nbsp &nbsp &nbsp <input type='checkbox' name='name1' /></td>
-                </tr>";
+  
+    $tsidnumber = $row['timesheetid'];
+        
+    $tableresult .= "<tr>";
+    $tableresult .= "<td>" . $row['name'] . "</td>";
+    $tableresult .= "<td>" . $row['timesheetsid'] . "</td>";
+    $tableresult .= "<td>" . $row['unixstamp'] . "</td>";
+    $tableresult .= "<td>" . $row['total_hours'] . "</td>";
+    $tableresult .= "<td>" . $row['coordinatorid'] . "</td>";
+    $tableresult .= "<td>" . $row['status'] . "</td>";
+    $tableresult .= "<td>(<a href='./currenttimesheets.php?timesheetsid=" . $row['timesheetsid'] . "'>View</a>)</td>";
+    $tableresult .= "<td> &nbsp &nbsp &nbsp <input type='checkbox' name='approvebox[".$tsidnumber."]' id='approvebox[$tsidnumber]' value='".$tsidnumber."'/></td>";
+    $tableresult .= "</tr>";
+    }
+    
+    $tableresult .= "</tbody>";
+    echo $tableresult;
                 }?>
-              </tbody>
             </table>
             <script>
             document.getElementById('date').value = (new Date()).format("m/dd/yy");
         </script>
             </div>
+            <?php
+            if($_POST['approve']){
+  echo "You've pressed approve.\n";
+  print_r($_POST);
+  }
+  
+if($_POST['reject']){
+  echo "You've pressed reject.";
+}
+?>
           </form>       
           </div>
 
