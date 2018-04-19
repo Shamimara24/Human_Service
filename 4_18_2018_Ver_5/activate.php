@@ -1,5 +1,4 @@
 <?php
-
 // Connect to the database
 error_reporting(E_ALL ^ E_NOTICE);
 ini_set('display_errors', 1);
@@ -25,7 +24,7 @@ $username = $_SESSION['username'];
 
 	<div class="activate-box">
 	<div class="form">
-	<form action='./general.php' method='post'>
+	<form action='./activate.php' method='post'>
 
 	<br></br>	
 
@@ -36,53 +35,42 @@ if (!isset($_GET["user"]) && !isset($_GET["code"]) && !$userid == 1){
 	echo $form;
 	$user = $_GET["user"];
 	$code = $_GET["code"];
-	$query = "SELECT * FROM users WHERE username = '$user' AND code = '$code'";
+	$query = "SELECT * FROM users WHERE username = '$user' AND code = '$code' limit 1";
 	$result = mysqli_query($dbh, $query);
 	$numrows = mysqli_num_rows($result);
-
-	if($numrows == 1){
 		$row = mysqli_fetch_assoc($result);
 		$dbuser = $row['username'];
 		$dbfname = $row['firstname'];
 		$dblname = $row['lastname'];
 		$dbpnumber = $row['phone_number'];
 		$dbemail = $row['email'];
-	}
-
-	else{
-		echo "Error: The specificed username and code either does not exist, or is not unique.\n";
-		echo "Contact your database administrator to determine the proper solution to this problem.\n";
-	}
+	
 }
-
 if ($_POST['submit']){
-
         $update = "UPDATE users SET active = 1 WHERE username = '$user' AND code = '$code'";
 		$updateresult = mysqli_query($dbh,$update);
 		if($updateresult){
-			echo "Account has been successfully set to active! Click <a href='admindashboard.php'>here</a> to return to dashboard.\n";
+			echo "Account has been successfully set to active! Click <a href='login.php'>here</a> to Log In.\n";
 			$querycheck = "SELECT * FROM users WHERE username = '$user' AND code = '$code'";
 			$resultcheck = mysqli_query($dbh, $querycheck);
 			$rowcheck = mysqli_fetch_assoc($resultcheck);
 			$active = $rowcheck['active'];
-			echo "Current info set: " . $rowcheck['username'] . "\n" . $rowcheck['active'] . "\n";
 		}else{
 			echo "Account update failed; the specified user account has not been set to active. Error: " . mysqli_error($dbh) . "\n";
 		}
 }
 ?>
 		<h1><center>Activate Account</center></h1>
+		<p>Username: <input type="text" name="uname" value="<?php echo $dbuser; ?>" readonly></p>
+        
+		<p>First Name: <input type="text" name="first" value="<?php echo $dbfname; ?>" readonly></p>
+       
+		<p>Last Name: <input type="text" name="last" value="<?php echo $dblname; ?>" readonly></p>
+       
+		<p>Phone Number: <input type="text" name="phone" value="<?php echo $dbpnumber; ?>" readonly></p>
 
-		<p>Username:</p>
-        <p><?php echo $dbuser ?></p>
-        <p>First Name:</p>
-		<p><?php echo $dbfname ?></p>
-        <p>Last Name:</p>
-		<p><?php echo $dblname ?></p>
-        <p>Phone Number:</p>
-		<p><?php echo $dbpnumber ?></p>
-		<p>Email:</p>
-		<p><?php echo $dbemail ?></p>
+		<p>Email: <input type="text" name="e_mail" value="<?php echo $dbemail; ?>" readonly></p>
+ 
         <input type='submit' name='submit' value='Activate'>
 		</div>
 
