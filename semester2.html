@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+
+
+<h2>Semesters</h2>
+<p>Please select which semester:</p>
+
+<script>
+function toggleField(hideObj,showObj){
+  hideObj.disabled=true;        
+  hideObj.style.display='none';
+  showObj.disabled=false;   
+  showObj.style.display='inline';
+  showObj.focus();
+}
+</script>
+<body>
+<form name="Select Semester" action="connect2.php">
+Browser: <select name="Semester" 
+          onchange="if(this.options[this.selectedIndex].value=='customOption'){
+              toggleField(this,this.nextSibling);
+              this.selectedIndex='0';
+          }">
+            <option></option>
+            <option value="customOption">[type a custom value]</option>
+            <option>Spring 2018</option>
+           style="display:none;" disabled="disabled" 
+            onblur="if(this.value==''){toggleField(this,this.previousSibling);}">
+<input type="submit" value="Submit">
+</form>
+</body>
+</html>
