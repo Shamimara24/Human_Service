@@ -16,6 +16,14 @@ FROM users WHERE roleID = '1' ORDER BY lastname ASC";
 //$sql = "SELECT * FROM users";
 $result = mysqli_query($dbh,$sql);
 
+
+$sql2 = "SELECT 120-sum(t.total_hours) as Hours, CONCAT(u.firstname, ' ', u.lastname) as StudentName FROM timesheets t JOIN
+                                studenttimesheets st ON (t.timesheetsid = st.timesheetsid) JOIN
+                students s ON (st.bannerid = s.bannerid) JOIN
+                users u ON (s.userid = u.userid) WHERE
+                t.status = 'Approved' AND u.userid = $userid GROUP BY 2";
+$totalhours = mysqli_query($dbh,$sql2);
+
 ?>
 
 
@@ -35,12 +43,21 @@ $result = mysqli_query($dbh,$sql);
 <body>
 
 
+
+
+
 <body>
+
     <div class="nav">
+
                 <img src="https://www.prepsportswear.com/media/images/college_logos/300x300/2126241_mktg_logo.png" class="mainavatar">
+
             <label for="toggle">&#9776;</label>
+
                         <br>
+
                 <b><center><font size="6" color="white">Rowan University Field Experience System</font></center></b>
+
     </div>
 
 
@@ -60,15 +77,22 @@ $result = mysqli_query($dbh,$sql);
         <a href="login.php" align="right">Logout</a>
 </div>
 
+
+
 <center><h1>Dashboard</h1></center>
 
    <div class="wrapper2">
         <div class="box1">
         <h2>Connections</h2>
+
 <b>Supervisors</b>
 
+
+
 <br></br>
+
         <?php
+
 if ($result->num_rows > 0) {
     // output data of each row
     while($row = $result->fetch_assoc()) {
@@ -85,8 +109,21 @@ if ($result->num_rows > 0) {
 
         </div>
         <div class="box2">
-            <h2>Calendar</h2>
-                <iframe src="https://calendar.google.com/calendar/embed?title=My%20Calendar&amp;showNav=0&amp;showPrint=0&amp;height=250&amp;wkst=1&amp;bgcolor=%23FFFFFF&amp;src=en.usa%23holiday%40group.v.calendar.google.com&amp;color=%23711616&amp;ctz=America%2FNew_York" style="border-width:0" width="400" height="250" frameborder="0" scrolling="no"></iframe>
+            <h2>Hours Remaining</h2>
+<b><p style="color:#339933;font-size:70px">
+<?php
+if ($result->num_rows > 0) {
+        // output data of each row
+    while($row = $totalhours->fetch_assoc()) {
+            echo "". $row["Hours"] .  "" ;
+                }
+                }
+                        else {
+                         echo "0 results";
+                        }
+?>
+</p></b>
+
 
         </div>
         <div class="box3">
@@ -110,7 +147,9 @@ if ($result->num_rows > 0) {
 </form>
         </div>
         <div class="box4">
+
             <h2>Timesheet</h2>
+
 <center>
         <table>
                 <tr>
@@ -121,7 +160,10 @@ if ($result->num_rows > 0) {
                 <th>Status</th>
                 <th>Open</th>
                 </tr>
+
 </center>
+
+
 
 <?php
 
@@ -141,6 +183,7 @@ SELECT t.*, CONCAT(us.firstname, ' ', us.lastname) AS SupervisorName, st.coordin
               u.userid = $userid";
 $results = mysqli_query($dbh, $query);
 while($row = mysqli_fetch_array($results)){
+
 ?>
         <tr>
                 <td><?php echo $row['timesheetsid']?></td>
@@ -157,18 +200,22 @@ while($row = mysqli_fetch_array($results)){
       }else
       echo "Please login <a href='./login.php>Login here.</a>";
      ?>
+
              <br></br><a href="currenttimesheet.php"><input type='submit' name='submit' value='Create new timesheet'></a><br></br>
 
         </div>
     </div>
 <script>
+
 /* When the user clicks on the button,
 toggle between hiding and showing the dropdown content */
 function myFunction() {
     document.getElementById("myDropdown").classList.toggle("show");
 }
 
+
 // Close the dropdown if the user clicks outside of it
+
 window.onclick = function(e) {
   if (!e.target.matches('.dropbtn')) {
     var myDropdown = document.getElementById("myDropdown");
@@ -177,7 +224,7 @@ window.onclick = function(e) {
       }
   }
 }
+
 </script>
 </body>
 </html>
-
