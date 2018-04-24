@@ -62,20 +62,21 @@ $totalhours = mysqli_query($dbh,$sql2);
 
 
 <div class="navbar">
-  <a href="dashboard.php">Dashboard</a>
-  <div class="dropdown">
-    <button class="dropbtn" onclick="myFunction()">Timesheets
+  <a href="admindashboard.php">Dashboard</a>
+        <a href="adminreporting.php">Reporting</a>
+ <div class="dropdown">
+    <button class="dropbtn" onclick="myFunction()">Connections
       <i class="fa fa-caret-down"></i>
     </button>
     <div class="dropdown-content" id="myDropdown">
-        <a href="timesheets.php">Timesheets</a>
-        <a href="currenttimesheet.php">Current Timesheet</a>
+        <a href="adminconnections.php">Users</a>
+        <a href="adminfieldsites.php">Field Sites</a>
     </div>
   </div>
-        <a href="connections.php">Connections</a>
-        <a href="profile.php">Profile</a>
+        <a href="adminprofile.php">Profile</a>
         <a href="login.php" align="right">Logout</a>
 </div>
+
 
 
 
