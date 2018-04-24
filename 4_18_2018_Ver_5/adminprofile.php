@@ -43,15 +43,16 @@ $result = mysqli_query($dbh,$sql);
 
 <div class="navbar">
   <a href="admindashboard.php">Dashboard</a>
-  <div class="dropdown">
-    <button class="dropbtn" onclick="myFunction()">Reports
+        <a href="adminreporting.php">Reporting</a>
+ <div class="dropdown">
+    <button class="dropbtn" onclick="myFunction()">Connections
       <i class="fa fa-caret-down"></i>
     </button>
     <div class="dropdown-content" id="myDropdown">
-        <a href="adminreporting.php">View Timesheets</a>
+        <a href="adminconnections.php">Users</a>
+        <a href="adminfieldsites.php">Field Sites</a>
     </div>
   </div>
-        <a href="adminconnections.php">Connections</a>
         <a href="adminprofile.php">Profile</a>
         <a href="login.php" align="right">Logout</a>
 </div>
