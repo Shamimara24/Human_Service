@@ -72,6 +72,8 @@ $username = $_SESSION['username'];
                 </tr>
 </center>
 <?php
+$check = "Saved";
+$check2 = "Rejected";
 $query = "
 SELECT t.*, CONCAT(us.firstname, ' ', us.lastname) AS SupervisorName, st.coordinatorid
  FROM timesheets t JOIN
@@ -95,7 +97,11 @@ while($row = mysqli_fetch_array($results)){
                 <td><?php echo $row['total_hours']?></td>
                 <td><?php echo $row['SupervisorName']?></td>
                 <td><?php echo $row['status']?></td>
-                <td><?php echo "(<a href='./currenttimesheets.php?timesheetsid=" . $row['timesheetsid'] . "'>Edit</a>)"?></td>
+				<?php if($row['status'] == $check or $row['status'] == $check2){ ?>
+                <td><?php echo "(<a href='./currenttimesheet.php?timesheetsid=" . $row['timesheetsid'] . "'>Edit</a>)"?></td>
+				<?php }else{ ?>
+				<td><a href="javascript:alert('You cannot edit a timesheet that is Pending or Approved.');">(Edit)</a></td>
+				<?php } ?>
         </tr>
         <?php
 }
