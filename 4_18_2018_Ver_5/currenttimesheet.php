@@ -284,8 +284,10 @@ if($_POST['save'] && !isset($_GET["timesheetsid"])){
 </tr>
 </table>
 </fieldset>
-<input type="submit" name="submit" value="Submit Timesheet">
-<input type="submit" name="save" value="Save Timesheet">
+	
+<input type="submit" name="save" value="Save"> &nbsp &nbsp &nbsp
+<input type="submit" name="submit" value="Submit">
+
 <p style="font-size:14px;"><u style="color:red;">WARNING: You will not be able to edit your timesheet once it's submitted. Please double check that your timesheet has the correct info!</p></u>
 </form>
 <script type="text/javascript" language="javascript">
