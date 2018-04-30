@@ -52,14 +52,14 @@ $result2 = mysqli_query($dbh,$sql2);
         <a href="login.php" align="right">Logout</a>
 </div>
 
-<center><h1>Field Sites</h1></center>
+<center><h1>Fieldsite Workers</h1></center>
 
 
 <div class="form">
 <form action="" method="post">
 <form align="center"  name="Reports">
 <p>Select a Field Site:
-<select id='fieldsitename' name='fieldsitetname'>
+<select id='fieldsitename' name='fieldsitename'>
         <?php
         while($row1 = mysqli_fetch_array($result2)):;
         ?>
@@ -70,47 +70,54 @@ $result2 = mysqli_query($dbh,$sql2);
 <center>
 
 <?php
-
+$link = "./admineditfieldsite.php?fieldsitename=";
 if($_POST['submit']){
 $fieldsitename = $_POST['fieldsitename'];
-$namesplit = explode(" ", $fieldsitename);
-$name = $namesplit[0];
-$tbl = "select name, address FROM fieldsites";
+$tbl = "select distinct concat(firstname, ' ', lastname) as workerName, email, f.fieldsiteid as fieldid from fieldsites f ";
+$tbl .= "join studenttimesheets sts on (f.fieldsiteid = sts.fieldsiteid) ";
+$tbl .= "join students s using (bannerid) ";
+$tbl .= "join users u using (userid) ";
+$tbl .= "where f.name = '" . $fieldsitename . "' ";
 $tblresults = mysqli_query($dbh,$tbl);
+
+$getID = "select fieldsiteid from fieldsites where name = '" . $fieldsitename . "' ";
+$getResults = mysqli_query($dbh,$getID);
+if($getResults ->num_rows > 0){
+	while ($row = mysqli_fetch_assoc($getResults)){
+	$fsid = "./admineditfieldsite.php?fieldsiteid=" . $row['fieldsiteid'];
+}
+}
+
 
 if($tblresults ->num_rows > 0){
         echo "<table border= '1'>";
         echo "<tr><th>&nbsp &nbsp Name &nbsp &nbsp </th>
-        <th>&nbsp &nbsp Address &nbsp &nbsp</th>
-                <th> Select </th></tr>";
+                <th> Email </th></tr>";
         $tableresults = "";
 
 
 while ($row = mysqli_fetch_assoc($tblresults)){
                 $tsidnumber = $row['timesheetid'];
                 $tableresult .= "<tr>";
-                $tableresult .= "<td>" . $row['name'] . "</td>";
-                $tableresult .= "<td>" . $row['address'] . "</td>";
-                $tableresult .= "<td> &nbsp &nbsp &nbsp <input type='checkbox' name='approvebox[".$tsidnumber."]' id='approvebox[$tsidnumber]' value='".$tsidnumber."'/></td>";
+                $tableresult .= "<td>" . $row['workerName'] . "</td>";
+                $tableresult .= "<td>" . $row['email'] ."</td>";
                 $tableresult .= "</tr>";
+				
                 }
-
+			
                 $tableresult .= "</table>";
                 echo $tableresult;
-                echo "<br><center>
-                <input type='submit' name='edit' class='btn btn-success' value='Edit' />
-                </center>";
+                
 }
                 else{
-                echo "Error" . mysqli_error($dbh);
+                echo "Error. No students working at fieldsite." . mysqli_error($dbh);
         }
 }
-
-if($_POST['edit']){
-        echo "You've pressed edit.\n";
-        print_r($_POST);
-        }
 ?>
+
+		<br><center>
+                <input type='button' value='Edit Fieldsite' onclick="window.location.href='<?php echo $fsid; ?>'"/>
+                </center>
 
 
 </center>
