@@ -1,7 +1,4 @@
 <?php
-
-
-
 // Connect to the database
 error_reporting(E_ALL ^ E_NOTICE);
 ini_set('display_errors', 1);
@@ -20,83 +17,76 @@ $username = $_SESSION['username'];
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Activate Account</title>
     <link rel="stylesheet" href="style.css">
-    <script defer src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
+    <script defer src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>   		
 </head>
 
 <body style = "background: url(https://www.rowanblog.com/wp-content/uploads/2018/04/Holly-Pointe-roommates-710x335.jpg); background-size: 100% 100%;"
-        <div class="activate-box">
-        <div class="form">
-        <form action='./general.php' method='post'>
 
-        <br></br>
+	<div class="activate-box">
+	<div class="form">
+	<form action=<?php echo "'". $link. "'" ?> method='post'>
 
+	<br></br>	
 
-
-<?php
-
-if (!isset($_GET["user"]) && !isset($_GET["code"]) && !$userid == 1){
-        echo "Error: This page is for administrators only. Click <a href='login.php'>here</a> to login.\n";
+	
+<?php		
+if (!isset($_GET["fieldsiteid"]) && !$userid == 1){
+	echo "Error: This page is for administrators only. Click <a href='login.php'>here</a> to login.\n";
 }else{
-
-        echo $form;
-        $user = $_GET["user"];
-        $code = $_GET["code"];
-        $query = "SELECT * FROM users WHERE username = '$user' AND code = '$code'";
-        $result = mysqli_query($dbh, $query);
-        $numrows = mysqli_num_rows($result);
-
-        if($numrows == 1){
-                $row = mysqli_fetch_assoc($result);
-                $dbuser = $row['username'];
-                $dbfname = $row['firstname'];
-                $dblname = $row['lastname'];
-                $dbpnumber = $row['phone_number'];
-                $dbemail = $row['email'];
-        }
-
-        else{
-                echo "Error: The specificed username and code either does not exist, or is not unique.\n";
-                echo "Contact your database administrator to determine the proper solution to this problem.\n";
-        }
-}
-
-
-
-if ($_POST['submit']){
-
-
-        $update = "UPDATE users SET active = 1 WHERE username = '$user' AND code = '$code'";
-                $updateresult = mysqli_query($dbh,$update);
-
-                if($updateresult){
-                        echo "Account has been successfully set to active! Click <a href='admindashboard.php'>here</a> to return to dashboard.\n";
-                        $querycheck = "SELECT * FROM users WHERE username = '$user' AND code = '$code'";
-                        $resultcheck = mysqli_query($dbh, $querycheck);
-                        $rowcheck = mysqli_fetch_assoc($resultcheck);
-                        $active = $rowcheck['active'];
-                        echo "Current info set: " . $rowcheck['username'] . "\n" . $rowcheck['active'] . "\n";
-                }else{
-                        echo "Account update failed; the specified user account has not been set to active. Error: " . mysqli_error($dbh) . "\n";
-                }
+	echo $form;
+	$link = "./admineditfieldsite.php?fieldsiteid=" . $fieldsiteid;
+	$fieldsiteid = $_GET["fieldsiteid"];
+	$query = "select * from fieldsites where fieldsiteid = '$fieldsiteid'";
+	$result = mysqli_query($dbh, $query);
+	$numrows = mysqli_num_rows($result);
+		$row = mysqli_fetch_assoc($result);
+		$fsname = $row['name'];
+		$fsaddress = $row['address'];
+		$fstype = $row['type'];
+	
 }
 ?>
-                <h1><center>Activate Account</center></h1>
 
-                <p>Username:</p>
-        <p><?php echo $dbuser ?></p>
-        <p>First Name:</p>
-                <p><?php echo $dbfname ?></p>
-        <p>Last Name:</p>
-                <p><?php echo $dblname ?></p>
-        <p>Phone Number:</p>
-                <p><?php echo $dbpnumber ?></p>
-                <p>Email:</p>
-                <p><?php echo $dbemail ?></p>
-        <input type='submit' name='submit' value='Activate'>
-                </div>
+		<h1><center>Edit Fieldsite</center></h1>
+		<p>Site Name: <input type="text" name="sname" value="<?php echo $fsname; ?>" ></p>
+        
+		<p>Site Address: <input type="text" name="saddress" value="<?php echo $fsaddress; ?>" ></p>
+       
+		<p>Site Type: <input type="text" name="stype" value="<?php echo $fstype; ?>" ></p>
+       
+        <input type='submit' name='submit' value='Update'>
+		<input type='submit' name='delete' value='Delete'>
 
+<?php
+if ($_POST['submit']){
+		$fsname = $_POST['sname'];
+        $fsaddress = $_POST['saddress'];
+        $fstype = $_POST['stype'];
+        $updateQ = "UPDATE fieldsites SET name = '$fsname', address = '$fsaddress', type = '$fstype' WHERE fieldsiteid= '$fieldsiteid';";
+		$updateresult = mysqli_query($dbh,$updateQ);
+		if($updateresult){
+			echo "<br/>";
+			echo "Fieldsite Updated! Click <a href='admindashboard.php'>here</a> to return to dashboard.\n";
+		}else{
+			echo "Fieldsite update failed. Error: " . mysqli_error($dbh) . "\n";
+		}
+}
 
-                </form>
+if ($_POST['delete']){
+	$deleteQ = "Delete from fieldsites where fieldsiteid = '$fieldsiteid';";
+	$updateDelete = mysqli_query($dbh,$deleteQ);
+	if($updateDelete){
+			echo "Fieldsite Deleted! Click <a href='admindashboard.php'>here</a> to return to dashboard.\n";
+		}else{
+			echo "Fieldsite update failed. Error: " . mysqli_error($dbh) . "\n";
+		}
+}
+?>
+
+		</div>
+
+	
+		</form>
         </div>
         </body>
-        </html>
+	</html>	
