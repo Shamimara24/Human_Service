@@ -35,8 +35,8 @@ if ($_POST['login']){
         $password = $_POST['password'];
         if($username){
                 if($password){
-                        $passwordhash = password_hash($password, PASSWORD_DEFAULT);
-                        echo $passwordhash . "\n";
+                        $hashedpassword = password_hash($password, PASSWORD_DEFAULT);
+                       // echo $passwordhash . "\n";
                         $sql = "SELECT u.*, a.adminid FROM users u ";
                         $sql .= "LEFT JOIN administrators a ON (u.userid = a.userid) ";
                         $sql .= "WHERE username='$username'";
@@ -48,7 +48,7 @@ if ($_POST['login']){
                                 $dbuser = $row['username'];
                                 $dbpass = $row['password'];
                                 $dbactive = $row['active'];
-                                if($password == $dbpass){
+                                if(password_verify($password, $hashedpassword)){
                                         if($dbactive == 1){
                                                 //set session info
                                                 $_SESSION['userid'] = $dbid;
