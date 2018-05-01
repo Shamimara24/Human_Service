@@ -52,6 +52,28 @@ $result2 = mysqli_query($dbh,$sql2);
         <a href="login.php" align="right">Logout</a>
 </div>
 
+<center><h1>Add a New Field Site</h1></center>
+<form action="" method="post" name="addfieldsiteform">
+<p>Fieldsite Name</p>
+<input type="text" name="fname" placeholder="Fieldsite Name">
+<p>Fieldsite Address</p>
+<input type="text" name="faddress" placeholder="Fieldsite Address">
+<p>Fieldsite Type</p>
+<input type="text" name="ftype" placeholder="Fieldsite Type">
+<p>Associated Coordinator</p>
+<select id='coordinatorname' name='coordinatorname'>
+<?php 
+$sql2 = "SELECT CONCAT(u.firstname, ' ', u.lastname) AS fullname FROM
+		users u JOIN coordinators c ON (u.userid = c.user_id)";
+$result3 = mysqli_query($dbh, $sql2);
+while($row2 = mysqli_fetch_array($result3)):;
+?>
+<option><?php echo $row2[0];?></option>
+<?php endwhile;?>
+</select><br><br>
+<input type = "submit" name="addfieldsite" value="Add Fieldsite">
+</form>
+
 <center><h1>Fieldsite Workers</h1></center>
 
 
@@ -112,6 +134,34 @@ while ($row = mysqli_fetch_assoc($tblresults)){
                 else{
                 echo "Error. No students working at fieldsite." . mysqli_error($dbh);
         }
+}
+
+if($_POST['addfieldsite']){
+	$fname = $_POST['fname'];
+	$faddress = $_POST['faddress'];
+	$ftype = $_POST['ftype'];
+	$coordinatorname = $_POST['coordinatorname'];
+	$namesplit = explode(" ", $coordinatorname);
+	$name = $namesplit[0];
+	
+	$selectcoordid = "SELECT c.coordinatorid, u.firstname FROM coordinators c JOIN
+						users u ON (c.user_id = u.userid) WHERE firstname = '$name'";
+	$res = mysqli_query($dbh, $selectcoordid);
+	if($res){
+		$row = mysqli_fetch_assoc($res);
+		$coordid = $row['coordinatorid'];
+		$sql = "INSERT INTO fieldsites (name, address, type, coordinatorid) VALUES 
+			('$fname', '$faddress', '$ftype', '$coordid')";
+	$result = mysqli_query($dbh, $sql);
+	if($result){
+		echo "$fname has been successfully added!";
+	}else{
+		echo "Error: New field site could not be entered! Error: " . mysqli_error($dbh);
+	}
+	}
+	else{
+		echo "Error: Couldn't select coordinator id. Error: " . mysqli_error($dbh);
+	}
 }
 ?>
 
