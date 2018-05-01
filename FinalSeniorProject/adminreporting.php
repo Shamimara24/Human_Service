@@ -134,7 +134,7 @@ while ($row = mysqli_fetch_assoc($tblresults)){
 
 
 if($_POST['approve']){
-        echo "<p style='font-size:15px;'><o style='color:red;'>Are you sure you want to AAPROVE these timesheets?</p></o>";
+        echo "<p style='font-size:15px;'><o style='color:red;'>Are you sure you want to APROVE these timesheets?</p></o>";
 		
 		echo "<table border= '1'>";
 		 echo "<tr><th>&nbsp &nbsp Student's Name &nbsp &nbsp </th>
