@@ -40,7 +40,7 @@ $result = mysqli_query($dbh,$sql);
       <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="dashboard.php">Rowan University</a>
       <ul class="navbar-nav px-3">
         <li class="nav-item text-nowrap">
-          <a class="nav-link" href="login.php">Sign out</a>
+          <a class="nav-link" href="logout.php">Sign out</a>
         </li>
       </ul>
     </nav>
@@ -86,9 +86,6 @@ $result = mysqli_query($dbh,$sql);
           </div>
 
           <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
-            <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
-            <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
-            <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
           </div>
 
           <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
@@ -96,7 +93,7 @@ $result = mysqli_query($dbh,$sql);
               <h1 class="h3 mb-3 font-weight-normal">Change password</h1>
               <input type="password" class="form-control" name ="password" placeholder="Old Password" required>
               <input type="password" class="form-control" name='updatepassword' placeholder="New Password" required>
-              <input class="btn btn-lg btn-success btn-block" type="submit" name="submit" value="Change Password"></input>
+              <input class="btn btn-lg btn-warning btn-block" type="submit" name="submit" value="Change Password"></input>
             </form>
           </div>
         </main>
@@ -108,8 +105,8 @@ $result = mysqli_query($dbh,$sql);
 
         <?php
         if ($_POST['submit']){
-        $password = $_POST['password'];
-        $updatepassword = $_POST['updatepassword'];
+        $password = mysqli_real_escape_string($dbh, $_POST['password']);
+        $updatepassword = mysqli_real_escape_string($dbh, $_POST['updatepassword']);
           if($password){
                 if($updatepassword){
                         $check = "SELECT * FROM users WHERE password = '$password' ";

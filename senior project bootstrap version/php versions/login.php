@@ -6,7 +6,6 @@ ini_set('display_errors', 1);
 include('connect.php');
 
 $dbh = ConnectDB();
-
 session_start();
 ?>
 <!DOCTYPE HTML>
@@ -39,7 +38,7 @@ session_start();
         <option value="spring2018">Spring 2018</option>
         <option value="fall2018">Fall 2018</option>
       </select>
-      <input class="btn btn-lg btn-success btn-block" type="submit" name="register" value="Register"></input>
+      <input class="btn btn-lg btn-warning btn-block" type="submit" name="register" value="Register"></input>
       <p class="message">Already have an account?<a href="#"> Login</a>
       <p class="mt-5 mb-3 text-muted"></p>
     </form>
@@ -48,7 +47,7 @@ session_start();
       <img class="mb-4" src="https://www.prepsportswear.com/media/images/college_logos/300x300/2126241_mktg_logo.png" alt="" width="72" height="72">
       <input type="text" name="username" class="form-control" placeholder="Username" required autofocus>
       <input type="password" name="password" class="form-control" placeholder="Password" required>
-      <input class="btn btn-lg btn-success btn-block" type="submit" name="login" value="Login"></input>
+      <input class="btn btn-lg btn-warning btn-block" type="submit" name="login" value="Login"></input>
       <p class="message">Don't have an account?<a href="#"> Register here</a></p>
       <p></p>
     </form>
@@ -57,8 +56,8 @@ session_start();
     <!-- PHP BLOCK -->
     <?php
     if ($_POST['login']){
-        $username = $_POST['username'];
-        $password = $_POST['password'];
+        $username = mysqli_real_escape_string($dbh, $_POST['username']);
+        $password = mysqli_real_escape_string($dbh, $_POST['password']);
         if($username){
                 if($password){
                         $passwordhash = password_hash($password, PASSWORD_DEFAULT);
@@ -106,11 +105,11 @@ session_start();
                 echo "You must enter your username.";
 }
 if ($_POST['register']){
-        $rusername = $_POST['rusername'];
-        $rpassword = $_POST['rpassword'];
-        $rpassword2 = $_POST['rpassword2'];
-        $remail = $_POST['remail'];
-        $rphone = $_POST['rphone'];
+        $rusername = mysqli_real_escape_string($dbh, $_POST['rusername']);
+        $rpassword = mysqli_real_escape_string($dbh, $_POST['rpassword']);
+        $rpassword2 = mysqli_real_escape_string($dbh, $_POST['rpassword2']);
+        $remail = mysqli_real_escape_string($dbh, $_POST['remail']);
+        $rphone = mysqli_real_escape_string($dbh, $_POST['rphone']);
         if(!$rusername==""){
         if($rphone){
         if($remail){
@@ -139,7 +138,7 @@ $iresult = "query returned false." . mysqli_error($dbh);
                                         $query = mysqli_query($dbh, "SELECT * FROM users WHERE username='$rusername'");
                                         $numrows = mysqli_num_rows($query);
                                         if($numrows == 1){
-                                                $site = "http://elvis.rowan.edu/~mcgrathj2/SeniorProject";
+                                                $site = "http://elvis.rowan.edu/~rodrigueb6/SeniorProject";
                                                 $webmaster = "rodrigueb6@students.rowan.edu";
                                                 $subject = "New User Account Request (HSFE)";
                                                 $message = "A new user has requested an account.\n";

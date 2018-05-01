@@ -1,5 +1,7 @@
 <?php
+
 // Connect to the database
+
 error_reporting(E_ALL ^ E_NOTICE);
 ini_set('display_errors', 1);
 include('connect.php');
@@ -11,7 +13,15 @@ $sql = "SELECT CONCAT(firstname, ' ' , lastname) AS fullName FROM users where ro
 $result = mysqli_query($dbh,$sql);
 $sql2 = "select datestart from timesheets";
 $result2 = mysqli_query($dbh,$sql2);
+
+$postarray = array();
+$selectedtimesheets = array();
+$finalarray = array();
+$emptyarray = array();
+
+
 ?>
+
 <!doctype html>
 <html lang="en">
   <head>
@@ -34,7 +44,7 @@ $result2 = mysqli_query($dbh,$sql2);
       <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="dashboard.php">Rowan University</a>
       <ul class="navbar-nav px-3">
         <li class="nav-item text-nowrap">
-          <a class="nav-link" href="login.php">Sign out</a>
+          <a class="nav-link" href="logout.php">Sign out</a>
         </li>
       </ul>
     </nav>
@@ -102,67 +112,135 @@ $result2 = mysqli_query($dbh,$sql2);
 
             <div class="table-responsive pb-2 mb-2">          
             <table class="table">
-                <tr>
-                  <th>Student Name</th>
-                  <th>Timesheet</th>
-                  <th>Date Submitted</th>
-                  <th>Total Hours</th>
-                  <th>Coordinator ID</th>
-                  <th>Status</th>
-                  <th>View Timesheet</th>
-                  <th>Select</th>
-                </tr>
-              
-              <?php
-    if($_POST['submit']){
-$studentname = $_POST['studentname'];
+<?php
+
+if($_POST['submit']){
+$studentname = mysqli_real_escape_string($dbh, $_POST['studentname']);
 $namesplit = explode(" ", $studentname);
-$name = $namesplit[0]; 
-  
-$tbl = "select concat(firstname, ' ', lastname) as name, timesheetsid, unixstamp, total_hours, 
-    coordinatorid, status ";
+$name = $namesplit[0];
+$tbl = "select concat(firstname, ' ', lastname) as name, timesheetsid, unixstamp, total_hours,
+                coordinatorid, status ";
 $tbl .="from rodrigueb6.users ";
 $tbl .= "join rodrigueb6.students s using (userID) ";
 $tbl .= "join rodrigueb6.studenttimesheets sts using (bannerID) ";
 $tbl .= "join rodrigueb6.timesheets ts using (timesheetsID) ";
 $tbl .= "WHERE firstName = '" . $name . "' ";
 $tblresults = mysqli_query($dbh,$tbl);
-$tableresult = "";
 
-                while ($row = mysqli_fetch_assoc($tblresults)){
-  
-    $tsidnumber = $row['timesheetid'];
-        
-    $tableresult .= "<tr>";
-    $tableresult .= "<td>" . $row['name'] . "</td>";
-    $tableresult .= "<td>" . $row['timesheetsid'] . "</td>";
-    $tableresult .= "<td>" . $row['unixstamp'] . "</td>";
-    $tableresult .= "<td>" . $row['total_hours'] . "</td>";
-    $tableresult .= "<td>" . $row['coordinatorid'] . "</td>";
-    $tableresult .= "<td>" . $row['status'] . "</td>";
-    $tableresult .= "<td>(<a href='./currenttimesheets.php?timesheetsid=" . $row['timesheetsid'] . "'>View</a>)</td>";
-    $tableresult .= "<td> &nbsp &nbsp &nbsp <input type='checkbox' name='approvebox[".$tsidnumber."]' id='approvebox[$tsidnumber]' value='".$tsidnumber."'/></td>";
-    $tableresult .= "</tr>";
+if($tblresults ->num_rows > 0){
+        echo "<tr><th>&nbsp &nbsp Student's Name &nbsp &nbsp </th>
+        <th>&nbsp &nbsp Timeheet &nbsp &nbsp</th>
+        <th>&nbsp &nbsp Date Submitted  &nbsp &nbsp  </th>
+        <th>&nbsp &nbsp Total Hours &nbsp &nbsp &nbsp  </th>
+        <th>&nbsp &nbsp CoordinatorID  &nbsp  &nbsp  </th>
+        <th>&nbsp &nbsp Status &nbsp &nbsp </th>
+                <th>&nbsp &nbsp View Timesheet &nbsp &nbsp </th>
+                <th> Select </th></tr>";
+        $tableresult = "";
+
+if ($row = mysqli_fetch_assoc($tblresults)){
+        $tableresult .= "<br>Timesheets for " . $row['name'] . "<br></br>";
+}
+
+while ($row = mysqli_fetch_assoc($tblresults)){
+                echo "<tr>";
+    echo "<td>" . $row['name'] . "</td>";
+    echo "<td>" . $row['timesheetsid'] . "</td>";
+    echo "<td>" . $row['unixstamp'] . "</td>";
+    echo "<td>" . $row['total_hours'] . "</td>";
+    echo "<td>" . $row['coordinatorid'] . "</td>";
+    echo "<td>" . $row['status'] . "</td>";
+    echo "<td>(<a href='./timesheets.php?timesheetsid=" . $row['timesheetsid'] . "'>View</a>)</td>";
+    echo "<td> &nbsp &nbsp &nbsp <input type='checkbox' name='approvebox[{$row['timesheetsid']}]' value='{$row['timesheetsid']}' /></td>";
+    echo "</tr>";
     }
     
-    $tableresult .= "</tbody>";
-    echo $tableresult;
-                }?>
-            </table>
+    echo "</table>";
+}
+                else{
+                echo "No timesheets found for student" . mysqli_error($dbh);
+        }
+}
+
+
+if($_POST['approve']){
+        echo "<p style='font-size:15px;'><o style='color:red;'>Are you sure you want to approve these timesheets?</p></o>";
+    
+    echo "<table border= '1'>";
+     echo "<tr><th>&nbsp &nbsp Student's Name &nbsp &nbsp </th>
+        <th>&nbsp &nbsp Timeheet &nbsp &nbsp</th>
+        <th>&nbsp &nbsp Date Submitted  &nbsp &nbsp  </th>
+        <th>&nbsp &nbsp Total Hours &nbsp &nbsp &nbsp  </th>
+        <th>&nbsp &nbsp CoordinatorID  &nbsp  &nbsp  </th>
+        <th>&nbsp &nbsp Status &nbsp &nbsp </th>
+                <th>&nbsp &nbsp View Timesheet &nbsp &nbsp </th></tr>";
+    foreach ($_POST['approvebox'] as $approvebox){
+    $tbl = "select concat(firstname, ' ', lastname) as name, timesheetsid, unixstamp, total_hours,
+                coordinatorid, status ";
+    $tbl .="from rodrigueb6.users ";
+    $tbl .= "join rodrigueb6.students s using (userID) ";
+    $tbl .= "join rodrigueb6.studenttimesheets sts using (bannerID) ";
+    $tbl .= "join rodrigueb6.timesheets ts using (timesheetsID) ";
+    $tbl .= "WHERE timesheetsid = " . $approvebox;
+    $tblresults = mysqli_query($dbh,$tbl);
+    while($row = mysqli_fetch_assoc($tblresults)){
+    echo "<td>" . $row['name'] . "</td>";
+    echo "<td>" . $row['timesheetsid'] . "</td>";
+    echo "<td>" . $row['unixstamp'] . "</td>";
+    echo "<td>" . $row['total_hours'] . "</td>";
+    echo "<td>" . $row['coordinatorid'] . "</td>";
+    echo "<td>" . $row['status'] . "</td>";
+    echo "<td>(<a href='./timesheets.php?timesheetsid=" . $row['timesheetsid'] . "'>View</a>)</td>";
+    echo "</tr>";
+        }
+      }
+    echo "</table>";
+    echo nl2br("Post contains: \n");
+    print_r($_POST);
+    echo nl2br("\nselectedtimesheets2 contains: \n");
+    $postarray = array_merge($emptyarray, $_POST['approvebox']);
+    $selectedtimesheets = array_merge($emptyarray, $postarray);
+    
+    //$selectedtimesheets2 is successfully set to the $_POST array here
+    print_r($selectedtimesheets);
+    
+    
+     echo "<br></br><center>
+                <input style='padding:5px' type='submit' name='accept' class='btn btn-success' value='Accept' />
+                &nbsp &nbsp
+                <input style='padding:5px' type='submit' name='goback' class='btn btn-success' value='Go Back' />
+                </center>";     
+        }
+    
+if($_POST['accept']){
+        echo nl2br("Post contains: \n");
+        print_r($_POST);
+        echo nl2br("\nselectedtimesheets2 contains: \n");
+        //$selectedtimesheets2 does not get echoed out, despite being successfully set and echoed previously..
+        print_r($selectedtimesheets);
+        var_dump($selectedtimesheets);
+        //foreach ($_POST['approvebox'] as $approvebox2){
+        //$sql = "UPDATE timesheets SET status = 'Approved' WHERE timesheetsid = " . $approvebox2;
+        //$sqlresult = mysqli_query($dbh,$sql);
+        //if($sqlresult){
+        //  echo "Timesheet #" . $approvebox2 . " has been successfully approved!";
+          //echo nl2br("\n");
+        //}else{
+          //echo "Error: Timesheet #" . $approvebox2 . " has has not been successfully approved.";
+          //echo nl2br("\nError: ");
+          //echo mysqli_error($dbh);
+        
+        }
+      
+
+if($_POST['reject']){
+        echo "You've pressed reject.";
+}
+?>
             <script>
             document.getElementById('date').value = (new Date()).format("m/dd/yy");
         </script>
             </div>
-            <?php
-            if($_POST['approve']){
-  echo "You've pressed approve.\n";
-  print_r($_POST);
-  }
-  
-if($_POST['reject']){
-  echo "You've pressed reject.";
-}
-?>
           </form>       
           </div>
 

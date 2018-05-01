@@ -1,0 +1,13 @@
+- Implement adminfieldsites.php
+- Implement admineditfieldsite.php
+- Implement forgotpassword.php
+- Implement resetpassword.php
+- Implement adminviewtimesheet.php
+- Fix timesheets submitting 2 timesheets
+- Save function on timesheets
+
+----------------------------------------------------------------------------------------
+
+Extras (if there's time)
+
+- Errors -> modals/popups (so the website doesnt get messed up when text is echo'd)

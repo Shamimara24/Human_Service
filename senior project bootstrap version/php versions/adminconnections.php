@@ -50,7 +50,7 @@ $response = mysqli_query($dbh,$sql2);
       <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="admindashboard.php">Rowan University</a>
       <ul class="navbar-nav px-3">
         <li class="nav-item text-nowrap">
-          <a class="nav-link" href="login.php">Sign out</a>
+          <a class="nav-link" href="logout.php">Sign out</a>
         </li>
       </ul>
     </nav>

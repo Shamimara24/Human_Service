@@ -6,7 +6,6 @@ include('connect.php');
 $dbh = ConnectDB();
 mysqli_query($dbh, "SET SESSION sql_mode = ''");
 session_start();
-
 $userid = $_SESSION['userid'];
 $username = $_SESSION['username'];
 ?>
@@ -25,15 +24,16 @@ $username = $_SESSION['username'];
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous" rel="stylesheet">
     <link href="style.css" rel="stylesheet">
 
-    <?php
+            <?php
+
 if(isset($_GET["timesheetsid"])){
         $timesheetsid = $_GET["timesheetsid"];
-        $query2 = "SELECT t.* FROM timesheets t JOIN
+        $query = "SELECT t.* FROM timesheets t JOIN
         studenttimesheets st ON (t.timesheetsid = st.timesheetsid) JOIN
         students s ON (st.bannerid = s.bannerid) JOIN
         users u ON (s.userid = u.userid) WHERE
         u.userid = $userid AND t.timesheetsid = $timesheetsid";
-        $result = mysqli_query($dbh, $query2);
+        $result = mysqli_query($dbh, $query);
         if($result){
                 while($row = mysqli_fetch_array($result)){
                 $sunday1 = $row['sunday1'];
@@ -51,12 +51,16 @@ if(isset($_GET["timesheetsid"])){
         $friday2 = $row['friday2'];
         $saturday2 = $row['saturday2'];
                 }
-        }else
-
+        }else{
                 echo "GET timesheet query failed. Error: " . mysqli_error($dbh) . "\n";
-}else{
+    }
 
-            $sunday1 = "0";
+    if($_POST['save']){
+      echo "You pressed save on an already existing timesheet";
+    }
+
+}else{
+        $sunday1 = "0";
         $monday1 = "0";
         $tuesday1 = "0";
         $wednesday1 = "0";
@@ -70,27 +74,26 @@ if(isset($_GET["timesheetsid"])){
         $thursday2 = "0";
         $friday2 = "0";
         $saturday2 = "0";
-}
 
 
 if($_POST['submit']){
-                $sunday1 = $_POST['Sunday'];
-        $monday1 = $_POST['Monday'];
-        $tuesday1 = $_POST['Tuesday'];
-        $wednesday1 = $_POST['Wednesday'];
-        $thursday1 = $_POST['Thursday'];
-        $friday1 = $_POST['Friday'];
-        $saturday1 = $_POST['Saturday'];
-        $sunday2 = $_POST['Sunday2'];
-        $monday2 = $_POST['Monday2'];
-        $tuesday2 = $_POST['Tuesday2'];
-        $wednesday2 = $_POST['Wednesday2'];
-        $thursday2 = $_POST['Thursday2'];
-        $friday2 = $_POST['Friday2'];
-        $saturday2 = $_POST['Saturday2'];
-         $totalhr = $_POST['Total'];
+        $sunday1 = mysqli_real_escape_string($dbh, $_POST['Sunday']);
+    $monday1 = mysqli_real_escape_string($dbh, $_POST['Monday']);
+        $tuesday1 = mysqli_real_escape_string($dbh, $_POST['Tuesday']);
+        $wednesday1 = mysqli_real_escape_string($dbh, $_POST['Wednesday']);
+        $thursday1 = mysqli_real_escape_string($dbh, $_POST['Thursday']);
+        $friday1 = mysqli_real_escape_string($dbh, $_POST['Friday']);
+        $saturday1 = mysqli_real_escape_string($dbh, $_POST['Saturday']);
+        $sunday2 = mysqli_real_escape_string($dbh, $_POST['Sunday2']);
+        $monday2 = mysqli_real_escape_string($dbh, $_POST['Monday2']);
+        $tuesday2 = mysqli_real_escape_string($dbh, $_POST['Tuesday2']);
+        $wednesday2 = mysqli_real_escape_string($dbh, $_POST['Wednesday2']);
+        $thursday2 = mysqli_real_escape_string($dbh, $_POST['Thursday2']);
+        $friday2 = mysqli_real_escape_string($dbh, $_POST['Friday2']);
+        $saturday2 = mysqli_real_escape_string($dbh, $_POST['Saturday2']);
+                $totalhr = mysqli_real_escape_string($dbh, $_POST['Total']);
                 $todaysdate = time();
-                $insert =  "INSERT INTO timesheets (total_hours, status, datestart, sunday1, monday1, tuesday1, wednesday1, ";
+                $insert =  "INSERT INTO timesheets (total_hours, status, unixstamp, sunday1, monday1, tuesday1, wednesday1, ";
         $insert .= "thursday1, friday1, saturday1, sunday2, monday2, tuesday2, wednesday2, thursday2, ";
         $insert .= "friday2, saturday2, userid) VALUES ";
         $insert .= "('$totalhr', 'Pending', '$todaysdate', '$sunday1', '$monday1', '$tuesday1', '$wednesday1', '$thursday1', '$friday1', '$saturday1', ";
@@ -98,17 +101,23 @@ if($_POST['submit']){
         $insertquery = mysqli_query($dbh, $insert);
 
                   if(!$insertquery){
+
             echo "Timesheet Query returned false." . mysqli_error($dbh) . "\n";
+
             }else
+
                 echo "Timesheet Query worked!\n";
+
                                 $bannerquery = "SELECT bannerid FROM students WHERE userid = $userid";
+
                                 $bannerresult = mysqli_query($dbh, $bannerquery);
+
                                 if($bannerresult){
+
                                         $row = mysqli_fetch_assoc($bannerresult);
                                         $bannerid = $row['bannerid'];
-                                        $idquery = "SELECT timesheetsid FROM timesheets WHERE datestart = $todaysdate
+                                        $idquery = "SELECT timesheetsid FROM timesheets WHERE unixstamp = $todaysdate
                                                                 AND userid = $userid";
-
                                         $idresult = mysqli_query($dbh, $idquery);
                                         if($idresult){
                                                 $row2 = mysqli_fetch_assoc($idresult);
@@ -120,7 +129,7 @@ if($_POST['submit']){
                                                                 '1')";
                                                 $insertstutimesheets = mysqli_query($dbh, $insert);
                                                 if($insertstutimesheets){
-                                                        echo "Studenttimesheets insert query success! \n";
+                                                        echo "Current timesheet has been successfully submitted! \n";
                                                 }else{
                                                         echo "Studenttimesheets insert query failed. timesheetsid: $timesheetsid Error: " . mysqli_error($dbh);
                                                 }
@@ -131,7 +140,66 @@ if($_POST['submit']){
                                         echo "Select banenrid query failed. Error: " . mysqli_error($dbh) . "\n";
                                 }
         }
-        ?>
+
+if($_POST['save'] && !isset($_GET["timesheetsid"])){
+        $sunday1 = mysqli_real_escape_string($dbh, $_POST['Sunday']);
+    $monday1 = mysqli_real_escape_string($dbh, $_POST['Monday']);
+        $tuesday1 = mysqli_real_escape_string($dbh, $_POST['Tuesday']);
+        $wednesday1 = mysqli_real_escape_string($dbh, $_POST['Wednesday']);
+        $thursday1 = mysqli_real_escape_string($dbh, $_POST['Thursday']);
+        $friday1 = mysqli_real_escape_string($dbh, $_POST['Friday']);
+        $saturday1 = mysqli_real_escape_string($dbh, $_POST['Saturday']);
+        $sunday2 = mysqli_real_escape_string($dbh, $_POST['Sunday2']);
+        $monday2 = mysqli_real_escape_string($dbh, $_POST['Monday2']);
+        $tuesday2 = mysqli_real_escape_string($dbh, $_POST['Tuesday2']);
+        $wednesday2 = mysqli_real_escape_string($dbh, $_POST['Wednesday2']);
+        $thursday2 = mysqli_real_escape_string($dbh, $_POST['Thursday2']);
+        $friday2 = mysqli_real_escape_string($dbh, $_POST['Friday2']);
+        $saturday2 = mysqli_real_escape_string($dbh, $_POST['Saturday2']);
+                $totalhr = mysqli_real_escape_string($dbh, $_POST['Total']);
+                $todaysdate = time();
+                $insert =  "INSERT INTO timesheets (total_hours, status, unixstamp, sunday1, monday1, tuesday1, wednesday1, ";
+        $insert .= "thursday1, friday1, saturday1, sunday2, monday2, tuesday2, wednesday2, thursday2, ";
+        $insert .= "friday2, saturday2, userid) VALUES ";
+        $insert .= "('$totalhr', 'Saved', '$todaysdate', '$sunday1', '$monday1', '$tuesday1', '$wednesday1', '$thursday1', '$friday1', '$saturday1', ";
+        $insert .= "'$sunday2', '$monday2', '$tuesday2', '$wednesday2', '$thursday2', '$friday2', '$saturday2', '$userid')";
+        $insertquery = mysqli_query($dbh, $insert);
+                  if(!$insertquery){
+            echo "Timesheet Query returned false." . mysqli_error($dbh) . "\n";
+            }else
+
+                echo "Timesheet Query worked!\n";
+                                $bannerquery = "SELECT bannerid FROM students WHERE userid = $userid";
+                                $bannerresult = mysqli_query($dbh, $bannerquery);
+                                if($bannerresult){
+                                        $row = mysqli_fetch_assoc($bannerresult);
+                                        $bannerid = $row['bannerid'];
+                                        $idquery = "SELECT timesheetsid FROM timesheets WHERE unixstamp = $todaysdate
+                                                                AND userid = $userid";
+                                        $idresult = mysqli_query($dbh, $idquery);
+
+                                        if($idresult){
+                                                $row2 = mysqli_fetch_assoc($idresult);
+                                                $timesheetsid = $row2['timesheetsid'];
+                                                $insert = "INSERT INTO studenttimesheets (bannerid, timesheetsid, fieldsiteid,
+                                                                coordinatorid) VALUES ('$bannerid', '$timesheetsid', '1',
+                                                                '1')";
+
+                                                $insertstutimesheets = mysqli_query($dbh, $insert);
+                                                if($insertstutimesheets){
+                                                        echo "Current timesheet has been successfully saved! \n";
+                                                }else{
+                                                        echo "Studenttimesheets insert query failed. timesheetsid: $timesheetsid Error: " . mysqli_error($dbh);
+                                                }
+                                        }else{
+                                                echo "Select timesheetid query failed. Error: " . mysqli_error($dbh) . "\n";
+                                        }
+                                }else{
+                                        echo "Select banenrid query failed. Error: " . mysqli_error($dbh) . "\n";
+                                }
+        }
+  }
+?>
   </head>
 
   <body>
@@ -140,7 +208,7 @@ if($_POST['submit']){
       <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="dashboard.php">Rowan University</a>
       <ul class="navbar-nav px-3">
         <li class="nav-item text-nowrap">
-          <a class="nav-link" href="login.php">Sign out</a>
+          <a class="nav-link" href="logout.php">Sign out</a>
         </li>
       </ul>
     </nav>
@@ -186,6 +254,32 @@ if($_POST['submit']){
           </div>
           
           <form name="form-time" align="center" method="post" action="./timesheets.php">
+            <div class="btn-toolbar mb-2">
+              <div class="btn-group mr-2 pb-2">
+                <button type="button" class="btn btn-sm btn-outline-secondary" data-toggle="modal" data-target="#timeModal">Submit New Timesheet</button>
+              </div>
+            </div>
+
+            <!-- Modal -->
+            <div class="modal fade" id="timeModal" role="dialog">
+              <div class="modal-dialog">
+    
+            <!-- Modal content-->
+            <div class="modal-content">
+              <div class="modal-header">
+                <h4 class="modal-title">Are you sure?</h4>
+              </div>
+              <div class="modal-body">
+                <p>WARNING: You will not be able to edit your timesheet once it's submitted. Please double check that your timesheet has the correct info!</p>
+              </div>
+              <div class="modal-footer">
+                <input class="btn btn-default" type="submit" name="submit" value="Submit"></input>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              </div>
+            </div>
+          </div>
+          </div>
+
             <div class="table-responsive pb-2 mb-2">          
             <table class="table">
                 <tr>
@@ -264,7 +358,6 @@ if($_POST['submit']){
               </tbody>
             </table>
             </div>
-            <input class="btn btn-lg btn-success btn-block" type="submit" name="submit" value="Submit TimeSheet"></input>
           </form>
 
           <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-2 mt-3 border-top">
@@ -302,7 +395,7 @@ if($_POST['submit']){
               while($row = mysqli_fetch_array($results)){
                 echo "<tr>";
                 echo "<td>" . $row['timesheetsid'] . "</td>";
-                echo "<td>" . $row['unixstamp'] . "</td>";
+                echo "<td>" . $row['datestart'] . "</td>";
                 echo "<td>" . $row['total_hours'] . "</td>";
                 echo "<td>" . $row['SupervisorName'] . "</td>";
                 echo "<td>" . $row['status'] . "</td>";
