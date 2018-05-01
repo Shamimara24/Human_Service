@@ -134,7 +134,7 @@ while ($row = mysqli_fetch_assoc($tblresults)){
 
 
 if($_POST['approve']){
-        echo "<p style='font-size:15px;'><o style='color:red;'>Are you sure you want to approve these timesheets?</p></o>";
+        echo "<p style='font-size:15px;'><o style='color:red;'>Are you sure you want to AAPROVE these timesheets?</p></o>";
 		
 		echo "<table border= '1'>";
 		 echo "<tr><th>&nbsp &nbsp Student's Name &nbsp &nbsp </th>
@@ -165,49 +165,95 @@ if($_POST['approve']){
 				}
 			}
 		echo "</table>";
-		echo nl2br("Post contains: \n");
-		print_r($_POST);
-		echo nl2br("\nselectedtimesheets2 (copy of session version) contains: \n");
 		$_SESSION['selectedtimesheets'] = array_merge($emptyarray, $_POST['approvebox']);
 		$selectedtimesheets2 = array_merge($emptyarray, $_POST['approvebox']);
-		
-		//$selectedtimesheets2 is successfully set to the $_POST array here
-		print_r($selectedtimesheets2);
-		
-		
+
 		 echo "<br></br><center>
-                <input style='padding:5px' type='submit' name='accept' class='btn btn-success' value='Accept' />
+                <input style='padding:5px' type='submit' name='approveaccept' class='btn btn-success' value='Accept' />
                 &nbsp &nbsp
                 <input style='padding:5px' type='submit' name='goback' class='btn btn-success' value='Go Back' />
                 </center>";			
         }
 		
-if($_POST['accept']){
+if($_POST['approveaccept']){
 				$selectedtimesheets = $_SESSION['selectedtimesheets'];
-				echo nl2br("Post contains: \n");
-				print_r($_POST);
-				echo nl2br("\nSESSION contains: \n");
-				//$selectedtimesheets2 does not get echoed out, despite being successfully set and echoed previously..
-				print_r($_SESSION);
-				echo nl2br("\nselectedtimesheets contains: \n");
-				print_r($selectedtimesheets);
-				//foreach ($_POST['approvebox'] as $approvebox2){
-				//$sql = "UPDATE timesheets SET status = 'Approved' WHERE timesheetsid = " . $approvebox2;
-				//$sqlresult = mysqli_query($dbh,$sql);
-				//if($sqlresult){
-				//	echo "Timesheet #" . $approvebox2 . " has been successfully approved!";
-					//echo nl2br("\n");
-				//}else{
-					//echo "Error: Timesheet #" . $approvebox2 . " has has not been successfully approved.";
-					//echo nl2br("\nError: ");
-					//echo mysqli_error($dbh);
+				foreach ($selectedtimesheets as $approvebox2){
+				$sql = "UPDATE timesheets SET status = 'Approved' WHERE timesheetsid = " . $approvebox2;
+				$sqlresult = mysqli_query($dbh,$sql);
+				if($sqlresult){
+					echo nl2br("\n");
+					echo "Timesheet #" . $approvebox2 . " has been successfully approved!";
+					echo nl2br("\n");
+					}else{
+					echo "Error: Timesheet #" . $approvebox2 . " has has not been successfully approved.";
+					echo nl2br("\nError: ");
+					echo mysqli_error($dbh);
 				
+					}
 				}
+			}
 			
 
 if($_POST['reject']){
-        echo "You've pressed reject.";
-}
+        echo "<p style='font-size:15px;'><o style='color:red;'>Are you sure you want to REJECT these timesheets?</p></o>";
+		
+		echo "<table border= '1'>";
+		 echo "<tr><th>&nbsp &nbsp Student's Name &nbsp &nbsp </th>
+        <th>&nbsp &nbsp Timeheet &nbsp &nbsp</th>
+        <th>&nbsp &nbsp Date Submitted  &nbsp &nbsp  </th>
+        <th>&nbsp &nbsp Total Hours &nbsp &nbsp &nbsp  </th>
+        <th>&nbsp &nbsp CoordinatorID  &nbsp  &nbsp  </th>
+        <th>&nbsp &nbsp Status &nbsp &nbsp </th>
+                <th>&nbsp &nbsp View Timesheet &nbsp &nbsp </th></tr>";
+		foreach ($_POST['approvebox'] as $approvebox){
+		$tbl = "select concat(firstname, ' ', lastname) as name, timesheetsid, unixstamp, total_hours,
+                coordinatorid, status ";
+		$tbl .="from rodrigueb6.users ";
+		$tbl .= "join rodrigueb6.students s using (userID) ";
+		$tbl .= "join rodrigueb6.studenttimesheets sts using (bannerID) ";
+		$tbl .= "join rodrigueb6.timesheets ts using (timesheetsID) ";
+		$tbl .= "WHERE timesheetsid = " . $approvebox;
+		$tblresults = mysqli_query($dbh,$tbl);
+		while($row = mysqli_fetch_assoc($tblresults)){
+		echo "<td>" . $row['name'] . "</td>";
+		echo "<td>" . $row['timesheetsid'] . "</td>";
+		echo "<td>" . $row['unixstamp'] . "</td>";
+		echo "<td>" . $row['total_hours'] . "</td>";
+		echo "<td>" . $row['coordinatorid'] . "</td>";
+		echo "<td>" . $row['status'] . "</td>";
+		echo "<td>(<a href='./currenttimesheets.php?timesheetsid=" . $row['timesheetsid'] . "'>View</a>)</td>";
+		echo "</tr>";
+				}
+			}
+		echo "</table>";
+		$_SESSION['selectedtimesheets'] = array_merge($emptyarray, $_POST['approvebox']);
+		$selectedtimesheets2 = array_merge($emptyarray, $_POST['approvebox']);
+
+		 echo "<br></br><center>
+                <input style='padding:5px' type='submit' name='rejectaccept' class='btn btn-success' value='Accept' />
+                &nbsp &nbsp
+                <input style='padding:5px' type='submit' name='goback' class='btn btn-success' value='Go Back' />
+                </center>";			
+        }
+		
+if($_POST['rejectaccept']){
+				$selectedtimesheets = $_SESSION['selectedtimesheets'];
+				foreach ($selectedtimesheets as $approvebox2){
+				$sql = "UPDATE timesheets SET status = 'Rejected' WHERE timesheetsid = " . $approvebox2;
+				$sqlresult = mysqli_query($dbh,$sql);
+				if($sqlresult){
+					echo nl2br("\n");
+					echo "Timesheet #" . $approvebox2 . " has been successfully rejected!";
+					echo nl2br("\n");
+					}else{
+					echo "Error: Timesheet #" . $approvebox2 . " has has not been successfully rejected.";
+					echo nl2br("\nError: ");
+					echo mysqli_error($dbh);
+				
+					}
+				}
+			}
+
 ?>
 
 </center>
