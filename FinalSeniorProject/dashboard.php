@@ -73,7 +73,7 @@ $nameresult = mysqli_query($dbh,$sql3);
   </div>
         <a href="connections.php">Connections</a>
         <a href="profile.php">Profile</a>
-        <a href="login.php" align="right">Logout</a>
+        <a href="logout.php" align="right">Logout</a>
 </div>
 
 

@@ -26,7 +26,7 @@ session_start();
                         <input type="password" name="password" placeholder="Enter Password Here">
                         <input type="submit" name="login" value="Login">
                         <p class="message"><a href='./register.php'>Sign up for an account<br><br></a></p>
-                        <a href="#">Forget your password?</a>
+                        <p class="message"><a href='./forgotpassword.php'>Forget your password?</a></p>
         </div>
                 </div>
                 <?php

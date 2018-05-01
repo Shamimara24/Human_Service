@@ -51,10 +51,6 @@ if(isset($_GET["timesheetsid"])){
                 echo "GET timesheet query failed. Error: " . mysqli_error($dbh) . "\n";
 		}
 
-		if($_POST['save']){
-			echo "You pressed save on an already existing timesheet";
-		}
-
 }else{
         $sunday1 = "0";
         $monday1 = "0";
@@ -72,7 +68,7 @@ if(isset($_GET["timesheetsid"])){
         $saturday2 = "0";
 
 
-if($_POST['submit']){
+if($_POST['newsubmit']){
         $sunday1 = $_POST['Sunday'];
 		$monday1 = $_POST['Monday'];
         $tuesday1 = $_POST['Tuesday'];
@@ -137,7 +133,7 @@ if($_POST['submit']){
                                 }
         }
 
-if($_POST['save'] && !isset($_GET["timesheetsid"])){
+if($_POST['newsave']){
         $sunday1 = $_POST['Sunday'];
 		$monday1 = $_POST['Monday'];
         $tuesday1 = $_POST['Tuesday'];
@@ -193,8 +189,69 @@ if($_POST['save'] && !isset($_GET["timesheetsid"])){
                                 }else{
                                         echo "Select banenrid query failed. Error: " . mysqli_error($dbh) . "\n";
                                 }
-        }
+        }	
 	}
+if($_POST['existingsave']){
+		$timesheetsid = $_GET["timesheetsid"];
+		$sunday1 = $_POST['Sunday'];
+		$monday1 = $_POST['Monday'];
+        $tuesday1 = $_POST['Tuesday'];
+        $wednesday1 = $_POST['Wednesday'];
+        $thursday1 = $_POST['Thursday'];
+        $friday1 = $_POST['Friday'];
+        $saturday1 = $_POST['Saturday'];
+        $sunday2 = $_POST['Sunday2'];
+        $monday2 = $_POST['Monday2'];
+        $tuesday2 = $_POST['Tuesday2'];
+        $wednesday2 = $_POST['Wednesday2'];
+        $thursday2 = $_POST['Thursday2'];
+        $friday2 = $_POST['Friday2'];
+        $saturday2 = $_POST['Saturday2'];
+        $totalhr = $_POST['Total'];
+        $todaysdate = time();
+		
+		$update = "UPDATE timesheets SET total_hours = $totalhr, unixstamp = $todaysdate, monday1 = $monday1, 
+					tuesday1 = $tuesday1, wednesday1 = $wednesday1, thursday1 = $thursday1, friday1 = $friday1, saturday1 = $saturday1,
+					sunday1 = $sunday1, monday2 = $monday2, tuesday2 = $tuesday2, wednesday2 = $wednesday2, thursday2 = $thursday2,
+					friday2 = $friday2, saturday2 = $saturday2, sunday2 = $sunday2 WHERE timesheetsid = $timesheetsid";
+		$updatequery = mysqli_query($dbh, $update);
+		if ($updatequery){
+			echo "Timesheet has been successfully saved!";
+		}else{
+			echo "Error: timesheet was not updated. Error: " . mysqli_error($dbh);
+		}
+}
+if($_POST['existingsubmit']){
+		$timesheetsid = $_GET["timesheetsid"];
+		$sunday1 = $_POST['Sunday'];
+		$monday1 = $_POST['Monday'];
+        $tuesday1 = $_POST['Tuesday'];
+        $wednesday1 = $_POST['Wednesday'];
+        $thursday1 = $_POST['Thursday'];
+        $friday1 = $_POST['Friday'];
+        $saturday1 = $_POST['Saturday'];
+        $sunday2 = $_POST['Sunday2'];
+        $monday2 = $_POST['Monday2'];
+        $tuesday2 = $_POST['Tuesday2'];
+        $wednesday2 = $_POST['Wednesday2'];
+        $thursday2 = $_POST['Thursday2'];
+        $friday2 = $_POST['Friday2'];
+        $saturday2 = $_POST['Saturday2'];
+        $totalhr = $_POST['Total'];
+        $todaysdate = time();
+		
+		$update = "UPDATE timesheets SET total_hours = $totalhr, status = 'Pending', unixstamp = $todaysdate, monday1 = $monday1, 
+					tuesday1 = $tuesday1, wednesday1 = $wednesday1, thursday1 = $thursday1, friday1 = $friday1, saturday1 = $saturday1,
+					sunday1 = $sunday1, monday2 = $monday2, tuesday2 = $tuesday2, wednesday2 = $wednesday2, thursday2 = $thursday2,
+					friday2 = $friday2, saturday2 = $saturday2, sunday2 = $sunday2 WHERE timesheetsid = $timesheetsid";
+		$updatequery = mysqli_query($dbh, $update);
+		if ($updatequery){
+			echo "Timesheet has been successfully submitted!";
+		}else{
+			echo "Error: timesheet was not updated. Error: " . mysqli_error($dbh);
+		}
+}	
+
 ?>
 </head>
 <body>
@@ -218,12 +275,12 @@ if($_POST['save'] && !isset($_GET["timesheetsid"])){
   </div>
         <a href="connections.php">Connections</a>
         <a href="profile.php">Profile</a>
-        <a href="login.php" align="right">Logout</a>
+        <a href="logout.php" align="right">Logout</a>
 </div>
 
 <center><h1>Current Timesheets</h1></center>
 <!--<div style="width: 600px; text-align: left; padding: 15px;">-->
-<form name="Timesheet" method="post" action="./currenttimesheet.php">
+<form name="Timesheet" method="post" action="">
 <div class="heading">
   </div>
 <center>
@@ -332,12 +389,15 @@ if($_POST['save'] && !isset($_GET["timesheetsid"])){
 </fieldset>
 
 	
-
-<input type="submit" name="save" value="Save"> &nbsp &nbsp &nbsp
-
-<input type="submit" name="submit" value="Submit">
-
-
+<?php
+if(isset($_GET['timesheetsid'])){
+	echo "<input type='submit' name='existingsave' value='Save'> &nbsp &nbsp &nbsp";
+	echo "<input type='submit' name='existingsubmit' value='Submit'>";
+}elseif(!isset($_GET['timesheetsid'])){
+	echo "<input type='submit' name='newsave' value='Save'> &nbsp &nbsp &nbsp";
+	echo "<input type='submit' name='newsubmit' value='Submit'>";
+}
+?>
 
 <p style="font-size:14px;"><u style="color:red;">WARNING: You will not be able to edit your timesheet once it's submitted. Please double check that your timesheet has the correct info!</p></u>
 

@@ -14,6 +14,8 @@ $result = mysqli_query($dbh,$sql);
 $sql2 = "select datestart from timesheets";
 $result2 = mysqli_query($dbh,$sql2);
 
+$emptyarray = array();
+$selectedtimesheets2 = array();
 ?>
 
 <!DOCTYPE html>
@@ -49,7 +51,7 @@ $result2 = mysqli_query($dbh,$sql2);
     </div>
   </div>
         <a href="adminprofile.php">Profile</a>
-        <a href="login.php" align="right">Logout</a>
+        <a href="logout.php" align="right">Logout</a>
 </div>
 
 <center><h1>Timesheet Search</h1></center>
@@ -106,26 +108,24 @@ if ($row = mysqli_fetch_assoc($tblresults)){
 }
 
 while ($row = mysqli_fetch_assoc($tblresults)){
-                $tsidnumber = $row['timesheetid'];
-                $tableresult .= "<tr>";
-                $tableresult .= "<td>" . $row['name'] . "</td>";
-                $tableresult .= "<td>" . $row['timesheetsid'] . "</td>";
-                $tableresult .= "<td>" . $row['unixstamp'] . "</td>";
-                $tableresult .= "<td>" . $row['total_hours'] . "</td>";
-                $tableresult .= "<td>" . $row['coordinatorid'] . "</td>";
-                $tableresult .= "<td>" . $row['status'] . "</td>";
-                $tableresult .= "<td>(<a href='./adminviewtimesheet.php?timesheetsid=" . $row['timesheetsid'] . "'>View</a>)</td>";
-                $tableresult .= "<td> &nbsp &nbsp &nbsp <input type='checkbox' name='approvebox[".$tsidnumber."]' id='approvebox[$tsidnumber]' value='".$tsidnumber."'/></td>";
-                $tableresult .= "</tr>";
-                }
-
-                $tableresult .= "</table>";
-                echo $tableresult;
-                echo "<br></br><center>
-                <input style='padding:5px' type='submit' name='approve' class='btn btn-success' value='Approve' />
-                &nbsp &nbsp
-                <input style='padding:5px' type='submit' name='reject' class='btn btn-success' value='Reject' />
-                </center>";
+               	echo "<tr>";
+		echo "<td>" . $row['name'] . "</td>";
+		echo "<td>" . $row['timesheetsid'] . "</td>";
+		echo "<td>" . $row['unixstamp'] . "</td>";
+		echo "<td>" . $row['total_hours'] . "</td>";
+		echo "<td>" . $row['coordinatorid'] . "</td>";
+		echo "<td>" . $row['status'] . "</td>";
+		echo "<td>(<a href='./currenttimesheets.php?timesheetsid=" . $row['timesheetsid'] . "'>View</a>)</td>";
+		echo "<td> &nbsp &nbsp &nbsp <input type='checkbox' name='approvebox[{$row['timesheetsid']}]' value='{$row['timesheetsid']}' /></td>";
+		echo "</tr>";
+		}
+		
+		echo "</table>";
+        echo "<br></br><center>
+              <input style='padding:5px' type='submit' name='approve' class='btn btn-success' value='Approve' />
+              &nbsp &nbsp
+              <input style='padding:5px' type='submit' name='reject' class='btn btn-success' value='Reject' />
+              </center>";
 }
                 else{
                 echo "No timesheets found for student" . mysqli_error($dbh);
@@ -134,9 +134,76 @@ while ($row = mysqli_fetch_assoc($tblresults)){
 
 
 if($_POST['approve']){
-        echo "You've pressed approve.\n";
-        print_r($_POST);
+        echo "<p style='font-size:15px;'><o style='color:red;'>Are you sure you want to approve these timesheets?</p></o>";
+		
+		echo "<table border= '1'>";
+		 echo "<tr><th>&nbsp &nbsp Student's Name &nbsp &nbsp </th>
+        <th>&nbsp &nbsp Timeheet &nbsp &nbsp</th>
+        <th>&nbsp &nbsp Date Submitted  &nbsp &nbsp  </th>
+        <th>&nbsp &nbsp Total Hours &nbsp &nbsp &nbsp  </th>
+        <th>&nbsp &nbsp CoordinatorID  &nbsp  &nbsp  </th>
+        <th>&nbsp &nbsp Status &nbsp &nbsp </th>
+                <th>&nbsp &nbsp View Timesheet &nbsp &nbsp </th></tr>";
+		foreach ($_POST['approvebox'] as $approvebox){
+		$tbl = "select concat(firstname, ' ', lastname) as name, timesheetsid, unixstamp, total_hours,
+                coordinatorid, status ";
+		$tbl .="from rodrigueb6.users ";
+		$tbl .= "join rodrigueb6.students s using (userID) ";
+		$tbl .= "join rodrigueb6.studenttimesheets sts using (bannerID) ";
+		$tbl .= "join rodrigueb6.timesheets ts using (timesheetsID) ";
+		$tbl .= "WHERE timesheetsid = " . $approvebox;
+		$tblresults = mysqli_query($dbh,$tbl);
+		while($row = mysqli_fetch_assoc($tblresults)){
+		echo "<td>" . $row['name'] . "</td>";
+		echo "<td>" . $row['timesheetsid'] . "</td>";
+		echo "<td>" . $row['unixstamp'] . "</td>";
+		echo "<td>" . $row['total_hours'] . "</td>";
+		echo "<td>" . $row['coordinatorid'] . "</td>";
+		echo "<td>" . $row['status'] . "</td>";
+		echo "<td>(<a href='./currenttimesheets.php?timesheetsid=" . $row['timesheetsid'] . "'>View</a>)</td>";
+		echo "</tr>";
+				}
+			}
+		echo "</table>";
+		echo nl2br("Post contains: \n");
+		print_r($_POST);
+		echo nl2br("\nselectedtimesheets2 (copy of session version) contains: \n");
+		$_SESSION['selectedtimesheets'] = array_merge($emptyarray, $_POST['approvebox']);
+		$selectedtimesheets2 = array_merge($emptyarray, $_POST['approvebox']);
+		
+		//$selectedtimesheets2 is successfully set to the $_POST array here
+		print_r($selectedtimesheets2);
+		
+		
+		 echo "<br></br><center>
+                <input style='padding:5px' type='submit' name='accept' class='btn btn-success' value='Accept' />
+                &nbsp &nbsp
+                <input style='padding:5px' type='submit' name='goback' class='btn btn-success' value='Go Back' />
+                </center>";			
         }
+		
+if($_POST['accept']){
+				$selectedtimesheets = $_SESSION['selectedtimesheets'];
+				echo nl2br("Post contains: \n");
+				print_r($_POST);
+				echo nl2br("\nSESSION contains: \n");
+				//$selectedtimesheets2 does not get echoed out, despite being successfully set and echoed previously..
+				print_r($_SESSION);
+				echo nl2br("\nselectedtimesheets contains: \n");
+				print_r($selectedtimesheets);
+				//foreach ($_POST['approvebox'] as $approvebox2){
+				//$sql = "UPDATE timesheets SET status = 'Approved' WHERE timesheetsid = " . $approvebox2;
+				//$sqlresult = mysqli_query($dbh,$sql);
+				//if($sqlresult){
+				//	echo "Timesheet #" . $approvebox2 . " has been successfully approved!";
+					//echo nl2br("\n");
+				//}else{
+					//echo "Error: Timesheet #" . $approvebox2 . " has has not been successfully approved.";
+					//echo nl2br("\nError: ");
+					//echo mysqli_error($dbh);
+				
+				}
+			
 
 if($_POST['reject']){
         echo "You've pressed reject.";

@@ -32,18 +32,24 @@ $username = $_SESSION['username'];
 if (!isset($_GET["user"]) && !isset($_GET["code"]) && !$userid == 1){
 	echo "Error: This page is for administrators only. Click <a href='login.php'>here</a> to login.\n";
 }else{
-	echo $form;
 	$user = $_GET["user"];
 	$code = $_GET["code"];
-	$query = "SELECT * FROM users WHERE username = '$user' AND code = '$code' limit 1";
+	$query = "SELECT * FROM users WHERE username = '$user' AND code = '$code'";
 	$result = mysqli_query($dbh, $query);
 	$numrows = mysqli_num_rows($result);
-		$row = mysqli_fetch_assoc($result);
-		$dbuser = $row['username'];
-		$dbfname = $row['firstname'];
-		$dblname = $row['lastname'];
-		$dbpnumber = $row['phone_number'];
-		$dbemail = $row['email'];
+		  if($numrows == 1){
+                $row = mysqli_fetch_assoc($result);
+                $dbuser = $row['username'];
+                $dbfname = $row['firstname'];
+                $dblname = $row['lastname'];
+                $dbpnumber = $row['phone_number'];
+                $dbemail = $row['email'];
+        }
+
+        else{
+                echo "Error: The specificed username and code either does not exist, or is not unique.\n";
+                echo "Contact your database administrator to determine the proper solution to this problem.\n";
+        }
 	
 }
 if ($_POST['submit']){

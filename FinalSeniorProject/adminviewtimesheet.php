@@ -144,7 +144,7 @@ if($_POST['submit']){
   </div>
 
         <a href="adminprofile.php">Profile</a>
-        <a href="login.php" align="right">Logout</a>
+        <a href="logout.php" align="right">Logout</a>
 </div>
 
 

@@ -49,7 +49,7 @@ $result2 = mysqli_query($dbh,$sql2);
     </div>
   </div>
         <a href="adminprofile.php">Profile</a>
-        <a href="login.php" align="right">Logout</a>
+        <a href="logout.php" align="right">Logout</a>
 </div>
 
 <center><h1>Fieldsite Workers</h1></center>
