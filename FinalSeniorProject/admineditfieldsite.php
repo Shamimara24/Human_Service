@@ -15,7 +15,7 @@ $username = $_SESSION['username'];
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Activate Account</title>
+    <title>Edit Fieldsite</title>
     <link rel="stylesheet" href="style.css">
     <script defer src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>   		
 </head>
