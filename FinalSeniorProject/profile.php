@@ -67,6 +67,8 @@ $result = mysqli_query($dbh,$sql);
         <input type='password' name='password' placeholder='Enter old password'>
         <p>New Password</p>
         <input type='password' name='updatepassword' placeholder='Enter new password'>
+		 <p>Retype New Password</p>
+        <input type='password' name='updatepassword2' placeholder='Retype new password'>
         <br></br>
         <input type='submit' name='submit' value='Change Password'>
         </form>
@@ -77,22 +79,42 @@ $result = mysqli_query($dbh,$sql);
 if ($_POST['submit']){
         $password = $_POST['password'];
         $updatepassword = $_POST['updatepassword'];
-
+		$updatepassword2 = $_POST['updatepassword2'];
         if($password){
                 if($updatepassword){
-                        $check = "SELECT * FROM users WHERE password = '$password' ";
-                        $check .= "AND userid = '$userid'";
-                $result = mysqli_query($dbh, $check);
-                $numrows = mysqli_num_rows($result);
-                if($numrows == 1){
-                $sql = "UPDATE users SET password='$updatepassword' WHERE
-                        userid = $userid";
-                if(mysqli_query($dbh, $sql)){
-                        echo "Password has been updated successfully!\n";
-                }else
-                        echo "Error updating password: " . mysqli_error($dbh);
-                }else
-                        echo "You did not enter the correct password for your account.\n $numrows $userid";
+					if($updatepassword2){
+						if(strlen($updatepassword)>4){
+							if($updatepassword == $updatepassword2){
+								$getpass = "SELECT * FROM users WHERE username = '$username' AND userid = $userid";
+								$result = mysqli_query($dbh, $getpass);
+								if($result){
+									$row = mysqli_fetch_assoc($result);
+									$dbpassword = $row['password'];
+									if(password_verify($password, $dbpassword)){
+										$hashedpassword = password_hash($updatepassword, PASSWORD_DEFAULT);
+										 $sql = "UPDATE users SET password='$hashedpassword' WHERE
+											userid = $userid";
+										if(mysqli_query($dbh, $sql)){
+											echo "Password has been updated successfully!\n";
+										}else{
+											echo "Error updating password: " . mysqli_error($dbh);
+										}
+									}else{
+										echo "You did not enter the correct password for your account.";
+									}
+								}else{
+									echo "Error: getpass query failed. Error: " . mysqli_error($dbh);
+								}
+						}else{
+							echo "You must retype your password correctly to change it.";
+						}
+						}else{
+							echo "Please make sure your new password is atleast 4 characters long.";
+						}
+						
+					}else{
+						echo "You must re-enter your new password first.";
+					}
                 }else
                         echo "You must enter your new password first.\n";
         }else

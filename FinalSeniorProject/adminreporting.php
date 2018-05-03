@@ -160,7 +160,7 @@ if($_POST['approve']){
 		echo "<td>" . $row['total_hours'] . "</td>";
 		echo "<td>" . $row['coordinatorid'] . "</td>";
 		echo "<td>" . $row['status'] . "</td>";
-		echo "<td>(<a href='./currenttimesheets.php?timesheetsid=" . $row['timesheetsid'] . "'>View</a>)</td>";
+		echo "<td>(<a href='./adminviewtimesheet.php?timesheetsid=" . $row['timesheetsid'] . "'>View</a>)</td>";
 		echo "</tr>";
 				}
 			}
@@ -221,7 +221,7 @@ if($_POST['reject']){
 		echo "<td>" . $row['total_hours'] . "</td>";
 		echo "<td>" . $row['coordinatorid'] . "</td>";
 		echo "<td>" . $row['status'] . "</td>";
-		echo "<td>(<a href='./currenttimesheets.php?timesheetsid=" . $row['timesheetsid'] . "'>View</a>)</td>";
+		echo "<td>(<a href='./adminviewtimesheet.php?timesheetsid=" . $row['timesheetsid'] . "'>View</a>)</td>";
 		echo "</tr>";
 				}
 			}

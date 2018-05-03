@@ -60,7 +60,8 @@ if(!isset($_GET["var"])){
 	
 	if($password == $password2){
 		if(strlen($password)>4){
-			$sql = "UPDATE users SET password='$password' WHERE code = $code";
+			$hashedpassword = password_hash($password, PASSWORD_DEFAULT);
+			$sql = "UPDATE users SET password='$hashedpassword' WHERE code = $code";
 		$result = mysqli_query($dbh, $sql);
 		if($result){
 			echo "Password has been successfully updated! Please click <a href='login.php'>here</a> to login.";

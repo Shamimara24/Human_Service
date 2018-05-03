@@ -48,7 +48,7 @@ if ($_POST['login']){
                                 $dbuser = $row['username'];
                                 $dbpass = $row['password'];
                                 $dbactive = $row['active'];
-                                if(password_verify($password, $hashedpassword)){
+                                if(password_verify($password, $dbpass)){
                                         if($dbactive == 1){
                                                 //set session info
                                                 $_SESSION['userid'] = $dbid;
