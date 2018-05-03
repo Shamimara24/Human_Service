@@ -115,7 +115,7 @@ while ($row = mysqli_fetch_assoc($tblresults)){
 		echo "<td>" . $row['total_hours'] . "</td>";
 		echo "<td>" . $row['coordinatorid'] . "</td>";
 		echo "<td>" . $row['status'] . "</td>";
-		echo "<td>(<a href='./currenttimesheets.php?timesheetsid=" . $row['timesheetsid'] . "'>View</a>)</td>";
+		echo "<td>(<a href='./adminviewtimesheet.php?timesheetsid=" . $row['timesheetsid'] . "'>View</a>)</td>";
 		echo "<td> &nbsp &nbsp &nbsp <input type='checkbox' name='approvebox[{$row['timesheetsid']}]' value='{$row['timesheetsid']}' /></td>";
 		echo "</tr>";
 		}
