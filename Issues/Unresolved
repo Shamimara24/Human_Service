@@ -1,1 +1,16 @@
+This file contains a list of all of the issues that remain to be addressed from the mid assessment demo:
+1) Set up automatic emails
+        • Notification of approve or rejected timesheet
+        • Notification of < 60 hours through semester (for example)
+        • Notification of being close to 120 hour maximum 
 
+
+The additional enhancements we would like to implmented from the the mid assesment demo:
+1) Student Dashboard Page
+        • Possible colored key for easy visual appeal of thresholds
+                 • Red - extremely close to 120 hour maximum
+                 • Yellow - mildly close to 120 hour maximum
+2) Administrator Dashboard Page
+        • Possible colored key for easy visual appeal of thresholds
+                 • Red - extremely close to 120 hour maximum
+                 • Yellow - mildly close to 120 hour maximum
