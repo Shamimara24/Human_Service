@@ -27,41 +27,27 @@ session_start();
 
   <body class="text-center">
     <div class = "form">
-    <form class="register-form" action='./login.php' method='post'>
-      <img class="mb-4" src="https://www.prepsportswear.com/media/images/college_logos/300x300/2126241_mktg_logo.png" alt="" width="72" height="72">
-      <input type="text" name="rusername" class="form-control" placeholder="Username" required autofocus>
-      <input type="password" name="rpassword" class="form-control" placeholder="Password" required>
-      <input type="password" name="rpassword2" class="form-control" placeholder="Re-enter Password" required>
-      <input type="text" name="remail" class="form-control" placeholder="Email address" required autofocus>
-      <input type="text" name="rphone" class="form-control" placeholder="Phone Number" required>
-      <select>
-        <option value="spring2018">Spring 2018</option>
-        <option value="fall2018">Fall 2018</option>
-      </select>
-      <input class="btn btn-lg btn-warning btn-block" type="submit" name="register" value="Register"></input>
-      <p class="message">Already have an account?<a href="#"> Login</a>
-      <p class="mt-5 mb-3 text-muted"></p>
-    </form>
 
     <form class="login-form" action='./login.php' method='post'>
       <img class="mb-4" src="https://www.prepsportswear.com/media/images/college_logos/300x300/2126241_mktg_logo.png" alt="" width="72" height="72">
       <input type="text" name="username" class="form-control" placeholder="Username" required autofocus>
       <input type="password" name="password" class="form-control" placeholder="Password" required>
       <input class="btn btn-lg btn-warning btn-block" type="submit" name="login" value="Login"></input>
-      <p class="message">Don't have an account?<a href="#"> Register here</a></p>
+      <p class="message">Don't have an account?<a href="register.php"> Register here</a></p>
+      <p class="message">Forgot your password?<a href="forgotpassword.php"> Reset here</a></p>
       <p></p>
     </form>
     </div>
 
     <!-- PHP BLOCK -->
     <?php
-    if ($_POST['login']){
+if ($_POST['login']){
         $username = mysqli_real_escape_string($dbh, $_POST['username']);
         $password = mysqli_real_escape_string($dbh, $_POST['password']);
         if($username){
                 if($password){
-                        $passwordhash = password_hash($password, PASSWORD_DEFAULT);
-                        echo $passwordhash . "\n";
+                        $hashedpassword = password_hash($password, PASSWORD_DEFAULT);
+                       // echo $passwordhash . "\n";
                         $sql = "SELECT u.*, a.adminid FROM users u ";
                         $sql .= "LEFT JOIN administrators a ON (u.userid = a.userid) ";
                         $sql .= "WHERE username='$username'";
@@ -73,12 +59,13 @@ session_start();
                                 $dbuser = $row['username'];
                                 $dbpass = $row['password'];
                                 $dbactive = $row['active'];
-                                if($password == $dbpass){
+                                if(password_verify($password, $dbpass)){
                                         if($dbactive == 1){
                                                 //set session info
                                                 $_SESSION['userid'] = $dbid;
-                                                $_SESSION['username'] = $dbuser;
+                                                $_SESSION['username'] = $dbuser;   
                                                 $dbrole = $row[roleID];
+                                                $_SESSION['roleID'] = $dbrole;
                                                         if($dbrole == 1){
                                                                 header('Location: http://elvis.rowan.edu/~mcgrathj2/SeniorProject/admindashboard.php');
                                                                 }
@@ -96,7 +83,6 @@ session_start();
                         }
                         else
                                 echo "The username you've entered was not found.";
-
                 }
                 else
                         echo "You must enter your password.";
@@ -104,74 +90,7 @@ session_start();
         else
                 echo "You must enter your username.";
 }
-if ($_POST['register']){
-        $rusername = mysqli_real_escape_string($dbh, $_POST['rusername']);
-        $rpassword = mysqli_real_escape_string($dbh, $_POST['rpassword']);
-        $rpassword2 = mysqli_real_escape_string($dbh, $_POST['rpassword2']);
-        $remail = mysqli_real_escape_string($dbh, $_POST['remail']);
-        $rphone = mysqli_real_escape_string($dbh, $_POST['rphone']);
-        if(!$rusername==""){
-        if($rphone){
-        if($remail){
-        if($rpassword){
-        if($rpassword2){
-                if ($rpassword === $rpassword2 ){
-                        if ( (strlen($remail) > 6) && (strstr($remail, "@")) && (strstr($remail, "."))){
-                                $sql = "SELECT * FROM users WHERE username='$rusername'";
-                                $query = mysqli_query($dbh, $sql);
-                                $numrows = mysqli_num_rows($query);
-                                if($numrows == 0){
-                                        $sql = "SELECT * FROM users WHERE email='$remail'";
-                                $query = mysqli_query($dbh, $sql);
-                                $numrows = mysqli_num_rows($query);
-                                if($numrows == 0){
-                                        $password = password_hash($rpassword, PASSWORD_DEFAULT);
-                                        $code = mt_rand(1000,9999);
-                                        $insert =  "INSERT INTO users (username, email, semester, phone_number, password, ";
-                                        $insert .= "firstname, lastname, active, code, roleID) VALUES ";
-                                        $insert .= "('$rusername', '$remail', 'spring2018', '$rphone', '$rpassword', ";
-                                        $insert .= "'fname', 'lname', '0', '$code', '2')";
-                                        $insertquery = mysqli_query($dbh, $insert);
-                                        if(!$insertquery){
-$iresult = "query returned false." . mysqli_error($dbh);
-                                        }
-                                        $query = mysqli_query($dbh, "SELECT * FROM users WHERE username='$rusername'");
-                                        $numrows = mysqli_num_rows($query);
-                                        if($numrows == 1){
-                                                $site = "http://elvis.rowan.edu/~rodrigueb6/SeniorProject";
-                                                $webmaster = "rodrigueb6@students.rowan.edu";
-                                                $subject = "New User Account Request (HSFE)";
-                                                $message = "A new user has requested an account.\n";
-                                                $message .= "Click the link below to activate the account.\n";
-                                                $message .= "$site/activate.php?user=$rusername&code=$code\n";
-                                                if(mail($webmaster, $subject, $message)){
-                                                        echo "You have been registered. Activation email has been successfully sent.";
-                                                }else
-                                                        echo "An error has occured. Your activation email was not sent.";
-                                        }else
-echo "An error has occured. Your account was not created. $iresult";
-                                }else
-                                echo "That email is currently being used for another account.";
-                                }else
-                                echo "That username has already been taken.";
-                                }
-                        else
-                        echo "You must enter a valid email address to register. $remail";
-                }
-                else
-                echo "Your passwords did not match.";
-                                }else
-                                echo "You must retype your password to register.";
-                        }else
-                        echo "You must enter your password to register.";
-                }else
-                echo "You must enter your email to register.";
-                }else
-                echo "You must enter your phone number to register";
-}else
-                echo "You must enter your username to register.";
 
-}
 ?>
 
 
@@ -179,15 +98,6 @@ echo "An error has occured. Your account was not created. $iresult";
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-
-    <script>
-    $(document).ready(function(){
-      $(".message a").click(function(){
-        $(".login-form").toggle();
-        $(".register-form").toggle();
-      });
-    });
-    </script>
     
   </body>
 </html>

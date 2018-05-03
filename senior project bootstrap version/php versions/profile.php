@@ -1,21 +1,25 @@
 <?php
+
 // Connect to the database
 error_reporting(E_ALL ^ E_NOTICE);
 ini_set('display_errors', 1);
 include('connect.php');
 $dbh = ConnectDB();
 session_start();
-
 $userid = $_SESSION['userid'];
 $username = $_SESSION['username'];
 $firstname = $_SESSION['firstname'];
-
+$roleID = $_SESSION['roleID'];
 $sql = "SELECT firstname, lastname, email, concat('(', substring(phone_number, 1, 3), ') ',
 substring(phone_number, 4, 3), '-',  substring(phone_number, 7, 9)) AS phone_number
 FROM users";
 
 //$sql = "SELECT * FROM users";
 $result = mysqli_query($dbh,$sql);
+if(!isset($_SESSION['userid'])) {
+  header("Location: http://elvis.rowan.edu/~mcgrathj2/SeniorProject/login.php"); /* Redirect browser */
+exit();
+}
 ?>
 
 <!doctype html>
@@ -93,6 +97,7 @@ $result = mysqli_query($dbh,$sql);
               <h1 class="h3 mb-3 font-weight-normal">Change password</h1>
               <input type="password" class="form-control" name ="password" placeholder="Old Password" required>
               <input type="password" class="form-control" name='updatepassword' placeholder="New Password" required>
+              <input type="password" class="form-control" name='updatepassword2' placeholder="Re-Enter New Password" required>
               <input class="btn btn-lg btn-warning btn-block" type="submit" name="submit" value="Change Password"></input>
             </form>
           </div>
@@ -104,30 +109,51 @@ $result = mysqli_query($dbh,$sql);
      ================================================== -->
 
         <?php
-        if ($_POST['submit']){
+if ($_POST['submit']){
         $password = mysqli_real_escape_string($dbh, $_POST['password']);
         $updatepassword = mysqli_real_escape_string($dbh, $_POST['updatepassword']);
-          if($password){
+    $updatepassword2 = mysqli_real_escape_string($dbh, $_POST['updatepassword2']);
+        if($password){
                 if($updatepassword){
-                        $check = "SELECT * FROM users WHERE password = '$password' ";
-                        $check .= "AND userid = '$userid'";
-                $result = mysqli_query($dbh, $check);
-                $numrows = mysqli_num_rows($result);
-                if($numrows == 1){
-                $sql = "UPDATE users SET password='$updatepassword' WHERE
-                        userid = $userid";
-                if(mysqli_query($dbh, $sql)){
-                        echo "Password has been updated successfully!";
-                }else
-                        echo "Error updating password: " . mysqli_error($dbh);
-                }else
-                        echo "You did not enter the correct password for your account.\n $numrows $userid";
+          if($updatepassword2){
+            if(strlen($updatepassword)>4){
+              if($updatepassword == $updatepassword2){
+                $getpass = "SELECT * FROM users WHERE username = '$username' AND userid = $userid";
+                $result = mysqli_query($dbh, $getpass);
+                if($result){
+                  $row = mysqli_fetch_assoc($result);
+                  $dbpassword = $row['password'];
+                  if(password_verify($password, $dbpassword)){
+                    $hashedpassword = password_hash($updatepassword, PASSWORD_DEFAULT);
+                     $sql = "UPDATE users SET password='$hashedpassword' WHERE
+                      userid = $userid";
+                    if(mysqli_query($dbh, $sql)){
+                      echo "Password has been updated successfully!\n";
+                    }else{
+                      echo "Error updating password: " . mysqli_error($dbh);
+                    }
+                  }else{
+                    echo "You did not enter the correct password for your account.";
+                  }
+                }else{
+                  echo "Error: getpass query failed. Error: " . mysqli_error($dbh);
+                }
+            }else{
+              echo "You must retype your password correctly to change it.";
+            }
+            }else{
+              echo "Please make sure your new password is atleast 4 characters long.";
+            }
+            
+          }else{
+            echo "You must re-enter your new password first.";
+          }
                 }else
                         echo "You must enter your new password first.\n";
         }else
                 echo "You must enter your password first.\n";
-      }
-      ?>
+}
+?>
 
         <!-- Bootstrap core JavaScript
     ================================================== -->

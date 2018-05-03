@@ -9,12 +9,17 @@ session_start();
 
 $userid = $_SESSION['userid'];
 $username = $_SESSION['username'];
+$roleID = $_SESSION['roleID'];
 $sql = "SELECT firstname, lastname, email, concat('(', substring(phone_number, 1, 3), ') ',
 substring(phone_number, 4, 3), '-',  substring(phone_number, 7, 9)) AS phone_number
 FROM users WHERE roleID = '1' ORDER BY lastname ASC";
 
 //$sql = "SELECT * FROM users";
 $result = mysqli_query($dbh,$sql);
+if(!isset($_SESSION['userid'])) {
+  header("Location: http://elvis.rowan.edu/~mcgrathj2/SeniorProject/login.php"); /* Redirect browser */
+exit();
+}
 
 ?>
 <!doctype html>
@@ -69,6 +74,12 @@ $result = mysqli_query($dbh,$sql);
                 </a>
               </li>
               <li class="nav-item">
+                <a class="nav-link" href="adminfieldsite.php">
+                  <span data-feather="target"></span>
+                  Field Sites <span class="sr-only"></span>
+                </a>
+              </li>
+              <li class="nav-item">
                 <a class="nav-link" href="adminprofile.php">
                   <span data-feather="user"></span>
                   Profile
@@ -98,6 +109,12 @@ $result = mysqli_query($dbh,$sql);
                 <h1 class="display-4">Connections</h1>
                 <p>View connected supervisors and students.</p>
                 <p><a class="btn btn-warning btn-lg" href="adminconnections.php" role="button">Go to connections &raquo;</a></p>
+          </div>
+
+          <div class="jumbotron">
+                <h1 class="display-4">Field Sites</h1>
+                <p>Add, edit, or remove field sites or view field site workers.</p>
+                <p><a class="btn btn-warning btn-lg" href="adminfieldsite.php" role="button">Go to field sites &raquo;</a></p>
           </div>
 
           <div class="jumbotron">

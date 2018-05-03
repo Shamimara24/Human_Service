@@ -8,6 +8,11 @@ mysqli_query($dbh, "SET SESSION sql_mode = ''");
 session_start();
 $userid = $_SESSION['userid'];
 $username = $_SESSION['username'];
+$roleID = $_SESSION['roleID'];
+if(!isset($_SESSION['userid'])) {
+    header("Location: http://elvis.rowan.edu/~mcgrathj2/SeniorProject/login.php"); /* Redirect browser */
+exit();
+}
 ?>
 
 <!DOCTYPE html>
@@ -55,10 +60,6 @@ if(isset($_GET["timesheetsid"])){
                 echo "GET timesheet query failed. Error: " . mysqli_error($dbh) . "\n";
     }
 
-    if($_POST['save']){
-      echo "You pressed save on an already existing timesheet";
-    }
-
 }else{
         $sunday1 = "0";
         $monday1 = "0";
@@ -76,7 +77,7 @@ if(isset($_GET["timesheetsid"])){
         $saturday2 = "0";
 
 
-if($_POST['submit']){
+if($_POST['newsubmit']){
         $sunday1 = mysqli_real_escape_string($dbh, $_POST['Sunday']);
     $monday1 = mysqli_real_escape_string($dbh, $_POST['Monday']);
         $tuesday1 = mysqli_real_escape_string($dbh, $_POST['Tuesday']);
@@ -141,7 +142,7 @@ if($_POST['submit']){
                                 }
         }
 
-if($_POST['save'] && !isset($_GET["timesheetsid"])){
+if($_POST['newsave']){
         $sunday1 = mysqli_real_escape_string($dbh, $_POST['Sunday']);
     $monday1 = mysqli_real_escape_string($dbh, $_POST['Monday']);
         $tuesday1 = mysqli_real_escape_string($dbh, $_POST['Tuesday']);
@@ -197,8 +198,68 @@ if($_POST['save'] && !isset($_GET["timesheetsid"])){
                                 }else{
                                         echo "Select banenrid query failed. Error: " . mysqli_error($dbh) . "\n";
                                 }
-        }
+        } 
   }
+if($_POST['existingsave']){
+    $timesheetsid = mysqli_real_escape_string($dbh, $_GET["timesheetsid"]);
+    $sunday1 = mysqli_real_escape_string($dbh, $_POST['Sunday']);
+    $monday1 = mysqli_real_escape_string($dbh, $_POST['Monday']);
+        $tuesday1 = mysqli_real_escape_string($dbh, $_POST['Tuesday']);
+        $wednesday1 = mysqli_real_escape_string($dbh, $_POST['Wednesday']);
+        $thursday1 = mysqli_real_escape_string($dbh, $_POST['Thursday']);
+        $friday1 = mysqli_real_escape_string($dbh, $_POST['Friday']);
+        $saturday1 = mysqli_real_escape_string($dbh, $_POST['Saturday']);
+        $sunday2 = mysqli_real_escape_string($dbh, $_POST['Sunday2']);
+        $monday2 = mysqli_real_escape_string($dbh, $_POST['Monday2']);
+        $tuesday2 = mysqli_real_escape_string($dbh, $_POST['Tuesday2']);
+        $wednesday2 = mysqli_real_escape_string($dbh, $_POST['Wednesday2']);
+        $thursday2 = mysqli_real_escape_string($dbh, $_POST['Thursday2']);
+        $friday2 = mysqli_real_escape_string($dbh, $_POST['Friday2']);
+        $saturday2 = mysqli_real_escape_string($dbh, $_POST['Saturday2']);
+        $totalhr = mysqli_real_escape_string($dbh, $_POST['Total']);
+        $todaysdate = time();
+    
+    $update = "UPDATE timesheets SET total_hours = $totalhr, unixstamp = $todaysdate, monday1 = $monday1, 
+          tuesday1 = $tuesday1, wednesday1 = $wednesday1, thursday1 = $thursday1, friday1 = $friday1, saturday1 = $saturday1,
+          sunday1 = $sunday1, monday2 = $monday2, tuesday2 = $tuesday2, wednesday2 = $wednesday2, thursday2 = $thursday2,
+          friday2 = $friday2, saturday2 = $saturday2, sunday2 = $sunday2 WHERE timesheetsid = $timesheetsid";
+    $updatequery = mysqli_query($dbh, $update);
+    if ($updatequery){
+      echo "Timesheet has been successfully saved!";
+    }else{
+      echo "Error: timesheet was not updated. Error: " . mysqli_error($dbh);
+    }
+}
+if($_POST['existingsubmit']){
+    $timesheetsid = mysqli_real_escape_string($dbh, $_GET["timesheetsid"]);
+    $sunday1 = mysqli_real_escape_string($dbh, $_POST['Sunday']);
+    $monday1 = mysqli_real_escape_string($dbh, $_POST['Monday']);
+        $tuesday1 = mysqli_real_escape_string($dbh, $_POST['Tuesday']);
+        $wednesday1 = mysqli_real_escape_string($dbh, $_POST['Wednesday']);
+        $thursday1 = mysqli_real_escape_string($dbh, $_POST['Thursday']);
+        $friday1 = mysqli_real_escape_string($dbh, $_POST['Friday']);
+        $saturday1 = mysqli_real_escape_string($dbh, $_POST['Saturday']);
+        $sunday2 = mysqli_real_escape_string($dbh, $_POST['Sunday2']);
+        $monday2 = mysqli_real_escape_string($dbh, $_POST['Monday2']);
+        $tuesday2 = mysqli_real_escape_string($dbh, $_POST['Tuesday2']);
+        $wednesday2 = mysqli_real_escape_string($dbh, $_POST['Wednesday2']);
+        $thursday2 = mysqli_real_escape_string($dbh, $_POST['Thursday2']);
+        $friday2 = mysqli_real_escape_string($dbh, $_POST['Friday2']);
+        $saturday2 = mysqli_real_escape_string($dbh, $_POST['Saturday2']);
+        $totalhr = mysqli_real_escape_string($dbh, $_POST['Total']);
+        $todaysdate = time();
+    
+    $update = "UPDATE timesheets SET total_hours = $totalhr, status = 'Pending', unixstamp = $todaysdate, monday1 = $monday1, 
+          tuesday1 = $tuesday1, wednesday1 = $wednesday1, thursday1 = $thursday1, friday1 = $friday1, saturday1 = $saturday1,
+          sunday1 = $sunday1, monday2 = $monday2, tuesday2 = $tuesday2, wednesday2 = $wednesday2, thursday2 = $thursday2,
+          friday2 = $friday2, saturday2 = $saturday2, sunday2 = $sunday2 WHERE timesheetsid = $timesheetsid";
+    $updatequery = mysqli_query($dbh, $update);
+    if ($updatequery){
+      echo "Timesheet has been successfully submitted!";
+    }else{
+      echo "Error: timesheet was not updated. Error: " . mysqli_error($dbh);
+    }
+} 
 ?>
   </head>
 
@@ -253,32 +314,20 @@ if($_POST['save'] && !isset($_GET["timesheetsid"])){
             <h1 class="h2">Timesheet</h1>
           </div>
           
-          <form name="form-time" align="center" method="post" action="./timesheets.php">
+          <form name="Timesheet" align="center" method="post" action="">
             <div class="btn-toolbar mb-2">
               <div class="btn-group mr-2 pb-2">
-                <button type="button" class="btn btn-sm btn-outline-secondary" data-toggle="modal" data-target="#timeModal">Submit New Timesheet</button>
+                <?php
+                if(isset($_GET['timesheetsid'])){
+                  echo "<input type='submit' name='existingsave' value='Save' class='btn btn-sm btn-outline-secondary'> &nbsp &nbsp &nbsp";
+                  echo "<input type='submit' name='existingsubmit' class='btn btn-sm btn-outline-secondary' value='Submit Timesheet'</input>";
+                }elseif(!isset($_GET['timesheetsid'])){
+                  echo "<input type='submit' name='newsave' value='Save'class='btn btn-sm btn-outline-secondary'> &nbsp &nbsp &nbsp";
+                  echo "<input type='submit' name='newsubmit' class='btn btn-sm btn-outline-secondary' value='Submit New Timesheet'</input>";
+                }
+                ?>
               </div>
             </div>
-
-            <!-- Modal -->
-            <div class="modal fade" id="timeModal" role="dialog">
-              <div class="modal-dialog">
-    
-            <!-- Modal content-->
-            <div class="modal-content">
-              <div class="modal-header">
-                <h4 class="modal-title">Are you sure?</h4>
-              </div>
-              <div class="modal-body">
-                <p>WARNING: You will not be able to edit your timesheet once it's submitted. Please double check that your timesheet has the correct info!</p>
-              </div>
-              <div class="modal-footer">
-                <input class="btn btn-default" type="submit" name="submit" value="Submit"></input>
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-              </div>
-            </div>
-          </div>
-          </div>
 
             <div class="table-responsive pb-2 mb-2">          
             <table class="table">
@@ -354,6 +403,9 @@ if($_POST['save'] && !isset($_GET["timesheetsid"])){
                     <input type="number" name="Sunday2" size="1" maxlength="1" class="form-control" value="<?php echo $sunday2 ?>" 
                     onkeypress="return inputLimiter(event,'Numbers')"  onblur="calc()" min="0" max="8" required>
                   </td>
+                  <td>
+                    <input type="number" name="Total" readonly="readonly" value="">
+                </td>
                 </tr>
               </tbody>
             </table>
@@ -377,6 +429,8 @@ if($_POST['save'] && !isset($_GET["timesheetsid"])){
               </thead>
 
               <?php
+              $check = "Saved";
+              $check2 = "Rejected";
               $query = "
               SELECT t.*, CONCAT(us.firstname, ' ', us.lastname) AS SupervisorName, st.coordinatorid
               FROM timesheets t JOIN
@@ -399,7 +453,12 @@ if($_POST['save'] && !isset($_GET["timesheetsid"])){
                 echo "<td>" . $row['total_hours'] . "</td>";
                 echo "<td>" . $row['SupervisorName'] . "</td>";
                 echo "<td>" . $row['status'] . "</td>";
-                echo "<td>" . "(<a href='./timesheets.php?timesheetsid=" . $row['timesheetsid'] . "'>Edit</a>)</td>";
+                if($row['status'] == $check or $row['status'] == $check2) {
+                  echo "<td>" . "(<a href='./timesheets.php?timesheetsid=" . $row['timesheetsid'] . "'>Edit</a>)</td>";
+                }
+                else {
+                  echo "<td>" . "<a href='javascript:alert('You cannot edit a timesheet that is Pending or Approved.');'>(Edit)</a></td>";
+                }
                 echo "</tr>"; 
               }
               ?>
@@ -425,25 +484,32 @@ if($_POST['save'] && !isset($_GET["timesheetsid"])){
 
     <!--//////////////////////////////////////////////////////////////////////////////////////////////-->
 <script type="text/javascript">
-  function calc(){
-  Monday = document.form-time.Monday.value;
-  Tuesday = document.form-time.Tuesday.value;
-  Wednesday = document.form-time.Wednesday.value;
-  Thursday = document.form-time.Thursday.value;
-  Friday = document.form-time.Friday.value;
-  Saturday = document.form-time.Saturday.value;
-  Sunday = document.form-time.Sunday.value;
-  Monday2 = document.form-time.Monday2.value;
-  Tuesday2 = document.form-time.Tuesday2.value;
-  Wednesday2 = document.form-time.Wednesday2.value;
-  Thursday2 = document.form-time.Thursday2.value;
-  Friday2 = document.form-time.Friday2.value;
-  Saturday2 = document.form-time.Saturday2.value;
-  Sunday2 = document.form-time.Sunday2.value;
+function calc(){
+
+  Monday = document.Timesheet.Monday.value;
+
+  Tuesday = document.Timesheet.Tuesday.value;
+
+  Wednesday = document.Timesheet.Wednesday.value;
+
+  Thursday = document.Timesheet.Thursday.value;
+
+  Friday = document.Timesheet.Friday.value;
+
+  Saturday = document.Timesheet.Saturday.value;
+
+  Sunday = document.Timesheet.Sunday.value;
+  Monday2 = document.Timesheet.Monday2.value;
+  Tuesday2 = document.Timesheet.Tuesday2.value;
+  Wednesday2 = document.Timesheet.Wednesday2.value;
+  Thursday2 = document.Timesheet.Thursday2.value;
+  Friday2 = document.Timesheet.Friday2.value;
+  Saturday2 = document.Timesheet.Saturday2.value;
+  Sunday2 = document.Timesheet.Sunday2.value;
   var RptTime = (Monday*1) + (Tuesday*1) + (Wednesday*1) + (Thursday*1) + (Friday*1) + (Saturday*1) + (Sunday*1) + (Monday2*1) + (Tuesday2*1) + (Wednesday2*1) + (Thursday2*1) + (Friday2*1) + (Saturday2*1) + (Sunday2*1);
-  document.form-time.Total.value = RptTime.toFixed(4);
+  document.Timesheet.Total.value = RptTime.toFixed(4);
   var Frac = 0;
-  var Full = parseInt(RptTime);
+ var Full = parseInt(RptTime);
   RptTimeFrac = RptTime - Full;
   if (RptTimeFrac < 0.25) { Frac = 0; }
   else { if (RptTimeFrac < 0.5) { Frac = 0.25; }
@@ -451,7 +517,7 @@ if($_POST['save'] && !isset($_GET["timesheetsid"])){
                 else { Frac = 0.75; }
               }
        }
-  document.form-time.ReportTime.value = (Full+Frac).toFixed(2);
+  document.Timesheet.ReportTime.value = (Full+Frac).toFixed(2);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////

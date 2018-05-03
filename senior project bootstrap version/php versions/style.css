@@ -96,28 +96,28 @@ body {
  * Forms
  */
 
- .form-time {
+ .Timesheet {
   width: 100%;
   max-width: 330px;
   padding: 15px;
 }
 
-.form-time .form-control {
+.Timesheet .form-control {
   position: relative;
   box-sizing: border-box;
   height: auto;
   padding: 10px;
   font-size: 16px;
 }
-.form-time .form-control:focus {
+.Timesheet .form-control:focus {
   z-index: 2;
 }
 
-.form-time button {
+.Timesheet button {
   margin-bottom: 5px;
 }
 
-.form-time .btn-group mr-2 {
+.Timesheet .btn-group mr-2 {
   align-items: right;
 }
 
@@ -138,6 +138,12 @@ body {
   z-index: 2;
 }
 .form-changepass input[type="password"] {
+  margin-bottom: 10px;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+
+.form-changepass input[type="text"] {
   margin-bottom: 10px;
   border-top-left-radius: 0;
   border-top-right-radius: 0;

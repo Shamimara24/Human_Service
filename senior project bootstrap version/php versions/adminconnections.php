@@ -8,6 +8,7 @@ session_start();
 
 $userid = $_SESSION['userid'];
 $username = $_SESSION['username'];
+$roleID = $_SESSION['roleID'];
 
 
 $sql = "SELECT firstname, lastname, email, concat('(', substring(phone_number, 1, 3), ') ',
@@ -26,6 +27,10 @@ FROM users WHERE roleID = '2'";
 $result = mysqli_query($dbh,$sql);
 
 $response = mysqli_query($dbh,$sql2);
+if(!isset($_SESSION['userid'])) {
+  header("Location: http://elvis.rowan.edu/~mcgrathj2/SeniorProject/login.php"); /* Redirect browser */
+exit();
+}
 ?>
 
 <!doctype html>
@@ -70,13 +75,19 @@ $response = mysqli_query($dbh,$sql2);
               <li class="nav-item">
                 <a class="nav-link" href="adminreporting.php">
                   <span data-feather="clock"></span>
-                  Timesheets
+                  Reporting
                 </a>
               </li>
               <li class="nav-item">
                 <a class="nav-link active" href="adminconnections.php">
                   <span data-feather="users"></span>
                   Connections <span class="sr-only">(current)</span>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="adminfieldsite.php">
+                  <span data-feather="target"></span>
+                  Field Sites <span class="sr-only"></span>
                 </a>
               </li>
               <li class="nav-item">
@@ -95,47 +106,70 @@ $response = mysqli_query($dbh,$sql2);
             <h1 class="h2">Connections</h1>
           </div>
 
-          <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3">
+          <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-1 mb-2">
             <h1 class="h3">Supervisors</h1>
           </div>
 
-          <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3">
-            <ul>
-            <?php
-            if ($result->num_rows > 0) {
-            // output data of each row
-              while($row = $result->fetch_assoc()) {
-                echo "<li>". "<b>",$row["firstname"],"</b>" . " " . "<b>", $row["lastname"],"</b>" . "" ;
-                echo "<br> Email Address:  ". $row["email"] . "" ;
-                echo "<br> Phone Number:  ". $row["phone_number"] . "</li>" ;
-              }
-            } else {
-              echo "Currently no supervisors";
-            }
-            ?>
-          </ul>
+          <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-1 mb-2">
+            <div class="table-responsive pb-2 mb-2">          
+              <table class="table">
+                <tr>
+                  <th>Name</th>
+                  <th>Email Address</th>
+                  <th>Phone Number</th>
+                </tr>
+                <tbody>
+                  <?php
+                  if ($result->num_rows > 0) {
+                  // output data of each row
+                    while($row = $result->fetch_assoc()) {
+                      echo "<tr>";
+                      echo "<td>". $row["firstname"] . " " .$row["lastname"] . "</td>";
+                      echo "<td>" . $row["email"] . "</td>";
+                      echo "<td>" . $row["phone_number"] . "</td>";
+                      echo "</tr>";
+                    }
+                  }else {
+                      echo "Currently no supervisors";
+                    }
+                ?>
+                </tbody>
+              </table>
+            </div>
           </div>
 
-          <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3">
+          <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-1 mb-2">
             <h1 class="h3">Students</h1>
           </div>
 
           <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3">
-            <ul>
-            <?php
-            if ($response->num_rows > 0) {
-            // output data of each row
-              while($row = $response->fetch_assoc()) {
-                echo "<li>". "<b>",$row["firstname"],"</b>" . " " . "<b>", $row["lastname"],"</b>" . "" ;
-                echo "<br> Email Address:  ". $row["email"] . "" ;
-                echo "<br> Phone Number:  ". $row["phone_number"] . "</li>";
-              }
-            } else {
-              echo "Currently no students";
-            }
-            ?>
-          </ul>
+            <div class="table-responsive pb-2 mb-2">          
+              <table class="table">
+                <tr>
+                  <th>Name</th>
+                  <th>Email Address</th>
+                  <th>Phone Number</th>
+                </tr>
+                <tbody>
+                  <?php
+                  if ($response->num_rows > 0) {
+                  // output data of each row
+                    while($row = $response->fetch_assoc()) {
+                      echo "<tr>";
+                      echo "<td>". $row["firstname"] . " " .$row["lastname"] . "</td>";
+                      echo "<td>" . $row["email"] . "</td>";
+                      echo "<td>" . $row["phone_number"] . "</td>";
+                      echo "</tr>";
+                    }
+                  }else {
+                      echo "Currently no supervisors";
+                    }
+                ?>
+              </tbody>
+            </table>
           </div>
+        </div>
+
         </main>
       </div>
     </div>
