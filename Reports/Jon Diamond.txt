@@ -1,0 +1,7 @@
+Contributions:
+Cleaned up the github when it got messy.
+worked on many of the pages including: adminreporting, activate, adminviewtimesheets,export, fieldsites, and more.
+Created the way users can navigate the website based on their roll (student or admin).
+Helped populate the database in the beginning. 
+designed the functionality of exporting files.
+was a team player
