@@ -1,1 +1,6 @@
-Add What you did here.
+Contributions:
+Created initial html pages (before php was implemented) and layouts for them
+Implemented Bootstrap for all pages
+Cleaned up and managed html code for all pages
+Created css stylesheets used for all pages
+Helped clean up some php code
