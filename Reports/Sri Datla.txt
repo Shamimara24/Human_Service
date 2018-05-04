@@ -1,1 +1,15 @@
-Add What you did here.
+
+Human Services Field Experience System 
+Project Contributions:
+
+1.) Timesheet system: HTML for timesheets and PHP export for submit
+	
+2.) Semester System: was not implemented, but pieces were used in Admin priviles when assigning students as well as student registration
+	
+3.) Overall HTML design and implementation for several pages along with merging work together
+
+4.) Bug troubleshooting
+
+5.) Team Player
+	
+
