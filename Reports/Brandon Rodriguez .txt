@@ -1,1 +1,21 @@
-Add What you did here.
+Add What you did here.Brandon Rodriguez
+Human Services Field Experience System 
+Dr. Baliga
+Project Contributions:
+
+1) Login/Register page: I coded everything found in the files found for login.php and register.php
+
+2.) Timesheet system: I implemented the HTML that Sri created for the timehseet form, and coded all the PHP that makes
+	the timesheet saving/submitting system work.
+	
+3.) Admin reporting: I ooded everything found in adminreporting.php except for the initial drop down list that lists the
+	students' names. This includes the PHP that makes accepting/rejecting timesheets.
+	
+4.) Database: I basically managed/configured the whole database myself. I also created most, if not all, the queries that exist
+	in the PHP within our project files.
+	
+5.) Forgot/Reset Password: The functionality that exists for a user to reset a password thru the login page or thru his or her
+	profile page was created by me. It is worth noting that Shamimara did try her hand at the forgot password system, but it did 
+	not end up fitting well into the current state of our program, so I took the liberty to re-code it to make implementation smoother.
+
+	
