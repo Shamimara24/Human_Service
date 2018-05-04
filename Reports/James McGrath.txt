@@ -1,6 +1,6 @@
 Contributions:
 Created initial html pages (before php was implemented) and layouts for them
-Implemented Bootstrap for all pages
+Implemented all of the Bootstrap for the entire webapp
 Cleaned up and managed html code for all pages
 Created css stylesheets used for all pages
 Helped clean up some php code
