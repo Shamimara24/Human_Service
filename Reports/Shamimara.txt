@@ -1,1 +1,11 @@
-Add What you did here.
+Professor Baliga,
+
+Started from the beginning I participated to the required docs regarding the project.
+Figured that php mail library can be used to make automated email working when it was decided to start research stuffs.
+Helped organize some pages- activation, login, register.
+Made the register page separate than the login page so that new user first creates account only in register page.
+Decided to have forget password working and got it working by the help of Brandon, users are allowed to create new password securely.
+Attended all the meetings that the group decided to have.
+As I didn’t take the Database course, I wasn’t very helpful to the group in this part but stayed active as long the semester went.
+
+Thank you.
