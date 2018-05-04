@@ -1,1 +1,36 @@
-Add What you did here.
+Contributions:
+1) Volunteered for Scrum master
+       • Initiated communication between team and faculty as needed
+               • Issues
+               • Progress
+       • Initiated team meetings
+2) Created everything in both deliverables, including all:
+       • Wireframes
+       • Use Case diagram
+       • Context Diagram
+       • Requirements 
+3) Supported early communication with project stakeholder, Carolyn Gribbin 
+4) Contributed to many of the pages:
+       • dashboard
+       • profile
+       • admindashboard
+       • adminprofile
+       • adminviewtimesheets
+       • adminreporting 
+       • registration
+5) Created pages
+       • connections
+       • admindashboard
+       • adminconnections
+5) Worked on overall user interface design
+       • Background
+       • Color
+       • Layout
+6) Helped to generate users in the database
+7) Was a team player
+       • Attended ALL group meetings
+       • Attended ALL formal meetings and demonstrations with faculty
+       • Active on GIT
+       • Active on Slack
+       • Helped to try and involve all team members
+8) Created final submission video
